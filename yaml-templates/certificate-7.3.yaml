@@ -1,0 +1,19 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: 'php73-test-ssl'
+  namespace: 'k8s-openresty-php'
+spec:
+  acme:
+    config:
+    - http01:
+        ingressClass: nginx
+      domains:
+      - 'php73-test.parallax.dev'
+  commonName: 'php73-test.parallax.dev'
+  dnsNames:
+  - 'php73-test.parallax.dev'
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  secretName: 'php73-test-ss'
