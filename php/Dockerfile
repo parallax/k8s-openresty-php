@@ -86,7 +86,8 @@ RUN apk add --no-cache \
     openssl \
     wget \
     curl \
-    bash
+    bash \
+    fcgi
 
 RUN if [ "$PHP_VERSION" == "7.1" ]; then \
 	apk add --no-cache \ 
@@ -357,6 +358,8 @@ RUN chmod +x /start.sh
 ADD /php/scripts/configure.sh /configure.sh
 RUN chmod +x /configure.sh
 
-ADD /test /src
+# Healthcheck script
+ADD /php/scripts/healthcheck.sh /healthcheck.sh
+RUN chmod +x /healthcheck.sh
 
 CMD ["/start.sh"]
