@@ -78,26 +78,24 @@ spec:
       - name: php
         image: '{{ PHP7.3IMAGEHERE }}'
         imagePullPolicy: IfNotPresent
-        #livenessProbe:
-        #  failureThreshold: 3
-        #  httpGet:
-        #    path: /healthz
-        #    port: nginx
-        #    scheme: HTTP
-        #  initialDelaySeconds: 10
-        #  periodSeconds: 10
-        #  successThreshold: 1
-        #  timeoutSeconds: 1
-        #readinessProbe:
-        #  failureThreshold: 3
-        #  httpGet:
-        #    path: /healthz
-        #    port: nginx
-        #    scheme: HTTP
-        #  initialDelaySeconds: 10
-        #  periodSeconds: 5
-        #  successThreshold: 2
-        #  timeoutSeconds: 2
+        livenessProbe:
+          failureThreshold: 1
+          exec:
+            command:
+            - /healthcheck.sh
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 1
+          exec:
+            command:
+            - /healthcheck.sh
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
         resources:
           limits:
             cpu: "1"
