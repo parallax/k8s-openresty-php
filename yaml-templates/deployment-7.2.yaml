@@ -31,6 +31,8 @@ spec:
           emptyDir: {}
         - name: run
           emptyDir: {}
+        - name: uploads
+          emptyDir: {}
       containers:
       - name: openresty
         image: '{{ OPENRESTYIMAGEHERE }}'
@@ -71,6 +73,8 @@ spec:
             mountPath: /src-shared
           - name: run
             mountPath: /run
+          - name: uploads
+            mountPath: /var/nginx-uploads
       - name: php
         image: '{{ PHP7.2IMAGEHERE }}'
         imagePullPolicy: IfNotPresent
@@ -106,6 +110,8 @@ spec:
             mountPath: /src-shared
           - name: run
             mountPath: /run
+          - name: uploads
+            mountPath: /var/nginx-uploads
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       terminationGracePeriodSeconds: 20
