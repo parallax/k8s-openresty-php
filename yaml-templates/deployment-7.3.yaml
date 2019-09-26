@@ -6,7 +6,7 @@ metadata:
   labels:
     app: 'k8s-openresty-php-7.3'
   name: 'k8s-openresty-php-7.3'
-  namespace: default
+  namespace: k8s-openresty-php
 spec:
   progressDeadlineSeconds: 600
   replicas: 1

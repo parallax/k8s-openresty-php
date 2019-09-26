@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: 'openresty-7.3'
-  namespace: default
+  namespace: k8s-openresty-php
 spec:
   ports:
   - name: openresty
