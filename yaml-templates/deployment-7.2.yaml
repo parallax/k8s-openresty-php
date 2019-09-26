@@ -4,8 +4,8 @@ metadata:
   annotations:
     cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
   labels:
-    app: 'k8s-openresty-php-7.2'
-  name: 'k8s-openresty-php-7.2'
+    app: 'k8s-openresty-php-72-test'
+  name: 'k8s-openresty-php-72-test'
   namespace: k8s-openresty-php
 spec:
   progressDeadlineSeconds: 600
@@ -13,7 +13,7 @@ spec:
   revisionHistoryLimit: 1
   selector:
     matchLabels:
-      app: 'k8s-openresty-php-7.2'
+      app: 'k8s-openresty-php-72-test'
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -24,7 +24,7 @@ spec:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
       labels:
-        app: 'k8s-openresty-php-7.2'
+        app: 'k8s-openresty-php-72-test'
     spec:
       volumes:
         - name: shared-files
