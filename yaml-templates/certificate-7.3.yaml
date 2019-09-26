@@ -16,4 +16,4 @@ spec:
   issuerRef:
     kind: ClusterIssuer
     name: letsencrypt-prod
-  secretName: 'php73-test-ss'
+  secretName: 'php73-test-ssl'
