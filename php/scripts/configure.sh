@@ -39,6 +39,30 @@ if [ ! -z "$ATATUS_APM_LICENSE_KEY" ] && [ "$ATATUS_APM_LICENSE_KEY" != "test" ]
     # Set the tags to contain useful data
     sed -i -e "s/atatus.tags = \"\"/atatus.tags = \"$SITE_BRANCH-$BUILD, $SITE_BRANCH\"/g" /etc/php/current/conf.d/atatus.ini
 
+   	# Atatus - configure raw sql logs if desirable
+	if [ ! -z "$ATATUS_APM_RAW_SQL" ]; then
+	
+	    # Enabled
+	    printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "Atatus SQL:" "Raw"
+	
+	    # Set the atatus api key
+	    sed -i -e "s/atatus.sql.capture = \"normalized\"/atatus.sql.capture = \"raw\"/g" /etc/php/current/conf.d/atatus.ini
+	
+	fi
+	
+	# Atatus - configure laravel queues if desirable
+	if [ -z "$ATATUS_APM_DISABLE_LARAVEL_QUEUES" ]; then
+	
+	    # Enabled
+	    printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "Atatus Laravel Queues:" "Enabled"
+	
+	    # Set the atatus api key
+	    sed -i -e "s/atatus.laravel.enable_queues = false/atatus.laravel.enable_queues = true/g" /etc/php/current/conf.d/atatus.ini
+	else
+		# Disabled
+	    printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "Atatus Laravel Queues:" "Disabled"
+	fi
+
 fi
 
 # Atatus - if api key is not set then disable
@@ -48,30 +72,6 @@ if [ -z "$ATATUS_APM_LICENSE_KEY" ] && [ "$ATATUS_APM_LICENSE_KEY" != "test" ]; 
     printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "Atatus:" "Disabled"
     rm -f /etc/php/current/conf.d/atatus.ini
 
-fi
-
-# Atatus - configure raw sql logs if desirable
-if [ ! -z "$ATATUS_APM_RAW_SQL" ]; then
-
-    # Enabled
-    printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "Atatus SQL:" "Raw"
-
-    # Set the atatus api key
-    sed -i -e "s/atatus.sql.capture = \"normalized\"/atatus.sql.capture = \"raw\"/g" /etc/php/current/conf.d/atatus.ini
-
-fi
-
-# Atatus - configure laravel queues if desirable
-if [ -z "$ATATUS_APM_DISABLE_LARAVEL_QUEUES" ]; then
-
-    # Enabled
-    printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "Atatus Laravel Queues:" "Enabled"
-
-    # Set the atatus api key
-    sed -i -e "s/atatus.laravel.enable_queues = false/atatus.laravel.enable_queues = true/g" /etc/php/current/conf.d/atatus.ini
-else
-	# Disabled
-    printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "Atatus Laravel Queues:" "Disabled"
 fi
 
 # Whether to send cache headers automatically for PHP scripts
