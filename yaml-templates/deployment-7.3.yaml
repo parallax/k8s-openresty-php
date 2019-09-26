@@ -5,7 +5,7 @@ metadata:
     cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
   labels:
     app: 'k8s-openresty-php-73-test'
-  name: 'k8s-openresty-php-73'
+  name: 'k8s-openresty-php-73-test'
   namespace: k8s-openresty-php
 spec:
   progressDeadlineSeconds: 600
