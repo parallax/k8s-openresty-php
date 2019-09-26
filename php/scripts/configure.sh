@@ -158,7 +158,7 @@ printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "PHP Max Execution Time:" "`cat /et
 if [ ! -z "$PHP_FPM_WORKERS" ]; then
         
     # Set PHP.ini accordingly
-    sed -i -e "s#pm.max_children = 4#pm.max_children = $PHP_FPM_WORKERS#g" /etc/php/current/php-fpm.d/www.conf
+    sed -i -e "s#pm.max_children = 8#pm.max_children = $PHP_FPM_WORKERS#g" /etc/php/current/php-fpm.d/www.conf
 
 fi
 
