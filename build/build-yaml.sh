@@ -1,7 +1,7 @@
 #!/bin/bash
 # Used to build and deploy to minikube for local dev
 
-$BUILDNUMBER=$bamboo_buildNumber
+BUILDNUMBER=$bamboo_buildNumber
 
 # Copy yaml-template
 rm -f ../yaml-deploy/*
