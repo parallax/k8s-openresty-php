@@ -1,0 +1,362 @@
+FROM alpine:3.9
+
+ARG PHP_VERSION=7.3
+ARG ATATUS_VERSION=1.8.0
+
+ENV \
+    # When using Composer, disable the warning about running commands as root/super user
+    COMPOSER_ALLOW_SUPERUSER=1 \
+    # Persistent runtime dependencies
+    DEPS="php$PHP_VERSION \
+        php$PHP_VERSION-phar \
+        php$PHP_VERSION-bcmath \
+        php$PHP_VERSION-calendar \
+        php$PHP_VERSION-mbstring \
+        php$PHP_VERSION-exif \
+        php$PHP_VERSION-ftp \
+        php$PHP_VERSION-openssl \
+        php$PHP_VERSION-zip \
+        php$PHP_VERSION-sysvsem \
+        php$PHP_VERSION-sysvshm \
+        php$PHP_VERSION-sysvmsg \
+        php$PHP_VERSION-shmop \
+        php$PHP_VERSION-sockets \
+        php$PHP_VERSION-zlib \
+        php$PHP_VERSION-bz2 \
+        php$PHP_VERSION-curl \
+        php$PHP_VERSION-simplexml \
+        php$PHP_VERSION-xml \
+        php$PHP_VERSION-opcache \
+        php$PHP_VERSION-dom \
+        php$PHP_VERSION-xmlreader \
+        php$PHP_VERSION-xmlwriter \
+        php$PHP_VERSION-tokenizer \
+        php$PHP_VERSION-ctype \
+        php$PHP_VERSION-gd \
+        php$PHP_VERSION-gettext \
+        php$PHP_VERSION-imagick \
+        php$PHP_VERSION-intl \
+        php$PHP_VERSION-ldap \
+        php$PHP_VERSION-intl \
+        php$PHP_VERSION-memcached \
+        php$PHP_VERSION-mysqli \
+        php$PHP_VERSION-mysqlnd \
+        php$PHP_VERSION-pcntl \
+        php$PHP_VERSION-pdo \
+        php$PHP_VERSION-pdo_mysql \
+        php$PHP_VERSION-pdo_sqlite \
+        php$PHP_VERSION-redis \
+        php$PHP_VERSION-soap \
+        php$PHP_VERSION-sqlite3 \
+        php$PHP_VERSION-tidy \
+        php$PHP_VERSION-tokenizer \
+        php$PHP_VERSION-wddx \
+        php$PHP_VERSION-xsl \
+        php$PHP_VERSION-session \
+        php$PHP_VERSION-fileinfo \
+        php$PHP_VERSION-iconv \
+        php$PHP_VERSION-json \
+        php$PHP_VERSION-posix \
+        php$PHP_VERSION-xmlrpc \
+        php$PHP_VERSION-fpm \
+        php$PHP_VERSION-apcu \
+        curl \
+        ca-certificates \
+        supervisor \
+        bash \
+        tzdata \
+        openssl \
+        wget \
+        curl \
+        bash"
+
+# PHP.earth Alpine repository for better developer experience
+ADD https://repos.php.earth/alpine/phpearth.rsa.pub /etc/apk/keys/phpearth.rsa.pub
+
+RUN set -x \
+    && echo "https://repos.php.earth/alpine/v3.9" >> /etc/apk/repositories
+
+# Install deps
+RUN apk add --no-cache \
+	curl \
+    ca-certificates \
+    supervisor \
+    bash \
+    tzdata \
+    openssl \
+    wget \
+    curl \
+    bash
+
+RUN if [ "$PHP_VERSION" == "7.1" ]; then \
+	apk add --no-cache \ 
+		php$PHP_VERSION \
+		php$PHP_VERSION-phar \
+		php$PHP_VERSION-bcmath \
+		php$PHP_VERSION-calendar \
+		php$PHP_VERSION-mbstring \
+		php$PHP_VERSION-exif \
+		php$PHP_VERSION-ftp \
+		php$PHP_VERSION-openssl \
+		php$PHP_VERSION-zip \
+		php$PHP_VERSION-sysvsem \
+		php$PHP_VERSION-sysvshm \
+		php$PHP_VERSION-sysvmsg \
+		php$PHP_VERSION-shmop \
+		php$PHP_VERSION-sockets \
+		php$PHP_VERSION-zlib \
+		php$PHP_VERSION-bz2 \
+		php$PHP_VERSION-curl \
+		php$PHP_VERSION-simplexml \
+		php$PHP_VERSION-xml \
+		php$PHP_VERSION-opcache \
+		php$PHP_VERSION-dom \
+		php$PHP_VERSION-xmlreader \
+		php$PHP_VERSION-xmlwriter \
+		php$PHP_VERSION-tokenizer \
+		php$PHP_VERSION-ctype \
+		php$PHP_VERSION-gd \
+		php$PHP_VERSION-gettext \
+		php$PHP_VERSION-imagick \
+		php$PHP_VERSION-intl \
+		php$PHP_VERSION-ldap \
+		php$PHP_VERSION-intl \
+		php$PHP_VERSION-memcached \
+		php$PHP_VERSION-mysqli \
+		php$PHP_VERSION-mysqlnd \
+		php$PHP_VERSION-pcntl \
+		php$PHP_VERSION-pdo \
+		php$PHP_VERSION-pdo_mysql \
+		php$PHP_VERSION-pdo_sqlite \
+		php$PHP_VERSION-redis \
+		php$PHP_VERSION-soap \
+		php$PHP_VERSION-sqlite3 \
+		php$PHP_VERSION-tidy \
+		php$PHP_VERSION-tokenizer \
+		php$PHP_VERSION-wddx \
+		php$PHP_VERSION-xsl \
+		php$PHP_VERSION-session \
+		php$PHP_VERSION-fileinfo \
+		php$PHP_VERSION-iconv \
+		php$PHP_VERSION-json \
+		php$PHP_VERSION-posix \
+		php$PHP_VERSION-xmlrpc \
+		php$PHP_VERSION-fpm \
+		php$PHP_VERSION-apcu; \
+	fi
+
+RUN if [ "$PHP_VERSION" == "7.2" ]; then \
+	apk add --no-cache \ 
+		php$PHP_VERSION \
+		php$PHP_VERSION-phar \
+		php$PHP_VERSION-bcmath \
+		php$PHP_VERSION-calendar \
+		php$PHP_VERSION-mbstring \
+		php$PHP_VERSION-exif \
+		php$PHP_VERSION-ftp \
+		php$PHP_VERSION-openssl \
+		php$PHP_VERSION-zip \
+		php$PHP_VERSION-sysvsem \
+		php$PHP_VERSION-sysvshm \
+		php$PHP_VERSION-sysvmsg \
+		php$PHP_VERSION-shmop \
+		php$PHP_VERSION-sockets \
+		php$PHP_VERSION-zlib \
+		php$PHP_VERSION-bz2 \
+		php$PHP_VERSION-curl \
+		php$PHP_VERSION-simplexml \
+		php$PHP_VERSION-xml \
+		php$PHP_VERSION-opcache \
+		php$PHP_VERSION-dom \
+		php$PHP_VERSION-xmlreader \
+		php$PHP_VERSION-xmlwriter \
+		php$PHP_VERSION-tokenizer \
+		php$PHP_VERSION-ctype \
+		php$PHP_VERSION-gd \
+		php$PHP_VERSION-gettext \
+		php$PHP_VERSION-imagick \
+		php$PHP_VERSION-intl \
+		php$PHP_VERSION-ldap \
+		php$PHP_VERSION-intl \
+		php$PHP_VERSION-memcached \
+		php$PHP_VERSION-mysqli \
+		php$PHP_VERSION-mysqlnd \
+		php$PHP_VERSION-pcntl \
+		php$PHP_VERSION-pdo \
+		php$PHP_VERSION-pdo_mysql \
+		php$PHP_VERSION-pdo_sqlite \
+		php$PHP_VERSION-redis \
+		php$PHP_VERSION-soap \
+		php$PHP_VERSION-sqlite3 \
+		php$PHP_VERSION-tidy \
+		php$PHP_VERSION-tokenizer \
+		php$PHP_VERSION-wddx \
+		php$PHP_VERSION-xsl \
+		php$PHP_VERSION-session \
+		php$PHP_VERSION-fileinfo \
+		php$PHP_VERSION-iconv \
+		php$PHP_VERSION-json \
+		php$PHP_VERSION-posix \
+		php$PHP_VERSION-xmlrpc \
+		php$PHP_VERSION-fpm \
+		php$PHP_VERSION-apcu; \
+	fi
+
+RUN if [ "$PHP_VERSION" == "7.3" ]; then \
+	apk add --no-cache \ 
+		php$PHP_VERSION \
+		php$PHP_VERSION-phar \
+		php$PHP_VERSION-bcmath \
+		php$PHP_VERSION-calendar \
+		php$PHP_VERSION-mbstring \
+		php$PHP_VERSION-exif \
+		php$PHP_VERSION-ftp \
+		php$PHP_VERSION-openssl \
+		php$PHP_VERSION-zip \
+		php$PHP_VERSION-sysvsem \
+		php$PHP_VERSION-sysvshm \
+		php$PHP_VERSION-sysvmsg \
+		php$PHP_VERSION-shmop \
+		php$PHP_VERSION-sockets \
+		php$PHP_VERSION-zlib \
+		php$PHP_VERSION-bz2 \
+		php$PHP_VERSION-curl \
+		php$PHP_VERSION-simplexml \
+		php$PHP_VERSION-xml \
+		php$PHP_VERSION-opcache \
+		php$PHP_VERSION-dom \
+		php$PHP_VERSION-xmlreader \
+		php$PHP_VERSION-xmlwriter \
+		php$PHP_VERSION-tokenizer \
+		php$PHP_VERSION-ctype \
+		php$PHP_VERSION-gd \
+		php$PHP_VERSION-gettext \
+		php$PHP_VERSION-imagick \
+		php$PHP_VERSION-intl \
+		php$PHP_VERSION-ldap \
+		php$PHP_VERSION-intl \
+		php$PHP_VERSION-memcached \
+		php$PHP_VERSION-mysqli \
+		php$PHP_VERSION-mysqlnd \
+		php$PHP_VERSION-pcntl \
+		php$PHP_VERSION-pdo \
+		php$PHP_VERSION-pdo_mysql \
+		php$PHP_VERSION-pdo_sqlite \
+		php$PHP_VERSION-redis \
+		php$PHP_VERSION-soap \
+		php$PHP_VERSION-sqlite3 \
+		php$PHP_VERSION-tidy \
+		php$PHP_VERSION-tokenizer \
+		php$PHP_VERSION-wddx \
+		php$PHP_VERSION-xsl \
+		php$PHP_VERSION-session \
+		php$PHP_VERSION-fileinfo \
+		php$PHP_VERSION-iconv \
+		php$PHP_VERSION-json \
+		php$PHP_VERSION-posix \
+		php$PHP_VERSION-xmlrpc \
+		php$PHP_VERSION-fpm \
+		php$PHP_VERSION-apcu; \
+	fi
+
+RUN if [ "$PHP_VERSION" == "7.4" ]; then \
+	apk add --no-cache \ 
+		php$PHP_VERSION \
+		php$PHP_VERSION-phar \
+		php$PHP_VERSION-bcmath \
+		php$PHP_VERSION-calendar \
+		php$PHP_VERSION-mbstring \
+		php$PHP_VERSION-exif \
+		php$PHP_VERSION-ftp \
+		php$PHP_VERSION-openssl \
+		php$PHP_VERSION-zip \
+		php$PHP_VERSION-sysvsem \
+		php$PHP_VERSION-sysvshm \
+		php$PHP_VERSION-sysvmsg \
+		php$PHP_VERSION-shmop \
+		php$PHP_VERSION-sockets \
+		php$PHP_VERSION-zlib \
+		php$PHP_VERSION-bz2 \
+		php$PHP_VERSION-curl \
+		php$PHP_VERSION-simplexml \
+		php$PHP_VERSION-xml \
+		php$PHP_VERSION-opcache \
+		php$PHP_VERSION-dom \
+		php$PHP_VERSION-xmlreader \
+		php$PHP_VERSION-xmlwriter \
+		php$PHP_VERSION-tokenizer \
+		php$PHP_VERSION-ctype \
+		php$PHP_VERSION-gd \
+		php$PHP_VERSION-gettext \
+		php$PHP_VERSION-imagick \
+		php$PHP_VERSION-intl \
+		php$PHP_VERSION-ldap \
+		php$PHP_VERSION-intl \
+		php$PHP_VERSION-memcached \
+		php$PHP_VERSION-mysqli \
+		php$PHP_VERSION-mysqlnd \
+		php$PHP_VERSION-pcntl \
+		php$PHP_VERSION-pdo \
+		php$PHP_VERSION-pdo_mysql \
+		php$PHP_VERSION-pdo_sqlite \
+		php$PHP_VERSION-redis \
+		php$PHP_VERSION-soap \
+		php$PHP_VERSION-sqlite3 \
+		php$PHP_VERSION-tidy \
+		php$PHP_VERSION-tokenizer \
+		php$PHP_VERSION-xsl \
+		php$PHP_VERSION-session \
+		php$PHP_VERSION-fileinfo \
+		php$PHP_VERSION-iconv \
+		php$PHP_VERSION-json \
+		php$PHP_VERSION-posix \
+		php$PHP_VERSION-xmlrpc \
+		php$PHP_VERSION-fpm \
+		php$PHP_VERSION-apcu; \
+	fi
+
+# Composer
+RUN EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)" && \
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    ACTUAL_SIGNATURE="$(php -r "echo hash_file('sha384', 'composer-setup.php');")" && \
+    if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]; \
+    then \
+        >&2 echo 'ERROR: Invalid installer signature' \
+        rm composer-setup.php \
+    exit 1; \
+    fi && \
+    php composer-setup.php --quiet --install-dir=/usr/local/bin --filename=composer && \
+    RESULT=$? && \
+    rm composer-setup.php && \
+    exit $RESULT
+
+# Symlink current version
+RUN ln -snf /etc/php/$PHP_VERSION /etc/php/current
+
+# Atatus
+RUN wget https://s3.amazonaws.com/atatus-artifacts/atatus-php/downloads/atatus-php-$ATATUS_VERSION-x64-musl.tar.gz && tar -xzvf atatus-php-$ATATUS_VERSION-x64-musl.tar.gz && cd atatus-php-$ATATUS_VERSION-x64-musl && ./install.sh && rm -f /atatus-php-$ATATUS_VERSION-x64-musl.tar.gz && rm -rf /atatus-php-$ATATUS_VERSION-x64-musl
+RUN sed -i -e 's#atatus.trace.response_time = 2000#atatus.trace.response_time = 1500#g' /etc/php/$PHP_VERSION/conf.d/atatus.ini && \
+  sed -i -e 's#atatus.collector.pidfile = "/var/run/atatus-php-collector.pid"#atatus.collector.pidfile = "/run/atatus-php-collector.pid"#g' /etc/php/$PHP_VERSION/conf.d/atatus.ini && \
+  sed -i -e 's#atatus.collector.connection = "/tmp/.atatus.sock"#atatus.collector.connection = "/run/atatus.sock"#g' /etc/php/$PHP_VERSION/conf.d/atatus.ini
+# Write log files to stdout
+RUN rm -f /var/log/atatus/agent.log && rm -f /var/log/atatus/collector.log && rm -f /var/log/atatus/debug.txt && ln -sf /dev/null /var/log/atatus/agent.log && ln -sf /dev/null /var/log/atatus/collector.log && ln -sf /dev/null /var/log/atatus/debug.txt
+
+# PHP Config
+ADD /php/conf/php-fpm.conf /etc/php/current/php-fpm.conf
+ADD /php/conf/php.ini /etc/php/current/php.ini
+ADD /php/conf/php-www.conf /etc/php/current/php-fpm.d/www.conf
+
+# Clear out garbage
+RUN unset DEPS && rm -rf /run/php && rm -rf /run/php-fpm7.3
+
+# Start script
+ADD /php/scripts/start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Configure script
+ADD /php/scripts/configure.sh /configure.sh
+RUN chmod +x /configure.sh
+
+ADD /test /src
+
+CMD ["/start.sh"]
