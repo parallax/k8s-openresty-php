@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+  labels:
+    app: 'k8s-openresty-php-7.1'
+  name: 'k8s-openresty-php-7.1'
+  namespace: default
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: 'k8s-openresty-php-7.1'
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+      labels:
+        app: 'k8s-openresty-php-7.1'
+    spec:
+      volumes:
+        - name: shared-files
+          emptyDir: {}
+        - name: run
+          emptyDir: {}
+      containers:
+      - name: openresty
+        image: '{{ OPENRESTYIMAGEHERE }}'
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: nginx
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: nginx
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 2
+          timeoutSeconds: 2
+        ports:
+        - containerPort: 80
+          name: openresty
+          protocol: TCP
+        resources:
+          limits:
+            cpu: "1"
+            memory: 1100Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+        volumeMounts:
+          - name: shared-files
+            mountPath: /src-shared
+          - name: run
+            mountPath: /run
+      - name: php
+        image: 'lawrencedudley/k8s-openresty-php-php:-7.3'
+        imagePullPolicy: IfNotPresent
+        #livenessProbe:
+        #  failureThreshold: 3
+        #  httpGet:
+        #    path: /healthz
+        #    port: nginx
+        #    scheme: HTTP
+        #  initialDelaySeconds: 10
+        #  periodSeconds: 10
+        #  successThreshold: 1
+        #  timeoutSeconds: 1
+        #readinessProbe:
+        #  failureThreshold: 3
+        #  httpGet:
+        #    path: /healthz
+        #    port: nginx
+        #    scheme: HTTP
+        #  initialDelaySeconds: 10
+        #  periodSeconds: 5
+        #  successThreshold: 2
+        #  timeoutSeconds: 2
+        resources:
+          limits:
+            cpu: "1"
+            memory: 1100Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+        volumeMounts:
+          - name: shared-files
+            mountPath: /src-shared
+          - name: run
+            mountPath: /run
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 20

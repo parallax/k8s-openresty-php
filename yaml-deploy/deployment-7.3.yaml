@@ -4,8 +4,8 @@ metadata:
   annotations:
     cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
   labels:
-    app: 'k8s-openresty-php'
-  name: 'k8s-openresty-php'
+    app: 'k8s-openresty-php-7.3'
+  name: 'k8s-openresty-php-7.3'
   namespace: default
 spec:
   progressDeadlineSeconds: 600
@@ -13,7 +13,7 @@ spec:
   revisionHistoryLimit: 1
   selector:
     matchLabels:
-      app: 'k8s-openresty-php'
+      app: 'k8s-openresty-php-7.3'
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -24,7 +24,7 @@ spec:
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
       labels:
-        app: 'k8s-openresty-php'
+        app: 'k8s-openresty-php-7.3'
     spec:
       volumes:
         - name: shared-files
@@ -57,7 +57,7 @@ spec:
           timeoutSeconds: 2
         ports:
         - containerPort: 80
-          name: nginx
+          name: openresty
           protocol: TCP
         resources:
           limits:
@@ -72,7 +72,7 @@ spec:
           - name: run
             mountPath: /run
       - name: php
-        image: '{{ PHPIMAGEHERE }}'
+        image: 'lawrencedudley/k8s-openresty-php-php:-7.3'
         imagePullPolicy: IfNotPresent
         #livenessProbe:
         #  failureThreshold: 3
