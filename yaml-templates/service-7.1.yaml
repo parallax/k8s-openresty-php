@@ -10,6 +10,6 @@ spec:
     protocol: TCP
     targetPort: 80
   selector:
-    app: 'k8s-openresty-php-7.1'
+    app: 'k8s-openresty-php-71-test'
   sessionAffinity: None
-  type: NodePort
+  type: ClusterIP
