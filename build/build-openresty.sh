@@ -4,4 +4,4 @@
 BUILDNUMBER=$bamboo_buildNumber
 
 # Openresty
-docker build -t prlx/k8s-openresty-php-openresty:build-$BUILDNUMBER -f ../openresty/Dockerfile ../
+docker build -t prlx/k8s-openresty-php-openresty:build-$BUILDNUMBER -f openresty/Dockerfile .
