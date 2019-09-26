@@ -7,6 +7,8 @@ BUILDNUMBER=$bamboo_buildNumber
 rm -f yaml-deploy/*
 cp yaml-templates/* yaml-deploy/
 
+ls -ahls 
+
 # Values
 sed -i '' -e "s#{{ OPENRESTYIMAGEHERE }}#prlx/k8s-openresty-php-openresty:build-$BUILDNUMBER#g" yaml-deploy/deployment.yaml
 sed -i '' -e "s#{{ PHP7.1IMAGEHERE }}#prlx/k8s-openresty-php-php:build-$BUILDNUMBER-php-7.1#g" yaml-deploy/deployment-7.1.yaml
