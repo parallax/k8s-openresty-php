@@ -5,16 +5,6 @@ function human_filesize($bytes, $decimals = 2) {
   return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
 }
 
-echo "Memory Used: ";
-
-echo human_filesize(memory_get_usage());
-
-echo "<br />";
-
-print_r($_FILES);
-
-echo "<br />";
-
 $target_dir = "/efs/php-tmp/";
 $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 $uploadOk = 1;
@@ -25,11 +15,8 @@ if(isset($_POST["submit"])) {
     echo "Size: " . human_filesize($size) . "<br />";
 }
 
-echo "Memory Used: ";
+$md5 = md5_file($_FILES["fileToUpload"]["tmp_name"]);
 
-echo human_filesize(memory_get_usage());
-
-
-echo "<br />";
+echo $md5;
 
 ?>
