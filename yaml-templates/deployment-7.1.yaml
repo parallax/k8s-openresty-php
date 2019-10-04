@@ -34,6 +34,41 @@ spec:
         - name: uploads
           emptyDir: {}
       containers:
+      - name: php
+        image: '{{ PHP7.1IMAGEHERE }}'
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 1
+          exec:
+            command:
+            - /healthcheck.sh
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 1
+          exec:
+            command:
+            - /healthcheck.sh
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: "1"
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+        volumeMounts:
+          - name: shared-files
+            mountPath: /src-shared
+          - name: run
+            mountPath: /run
+          - name: uploads
+            mountPath: /var/nginx-uploads
       - name: openresty
         image: '{{ OPENRESTYIMAGEHERE }}'
         imagePullPolicy: IfNotPresent
@@ -61,41 +96,6 @@ spec:
         - containerPort: 80
           name: openresty
           protocol: TCP
-        resources:
-          limits:
-            cpu: "1"
-            memory: 512Mi
-          requests:
-            cpu: 50m
-            memory: 64Mi
-        volumeMounts:
-          - name: shared-files
-            mountPath: /src-shared
-          - name: run
-            mountPath: /run
-          - name: uploads
-            mountPath: /var/nginx-uploads
-      - name: php
-        image: '{{ PHP7.1IMAGEHERE }}'
-        imagePullPolicy: IfNotPresent
-        livenessProbe:
-          failureThreshold: 1
-          exec:
-            command:
-            - /healthcheck.sh
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 5
-        readinessProbe:
-          failureThreshold: 1
-          exec:
-            command:
-            - /healthcheck.sh
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 5
         resources:
           limits:
             cpu: "1"
