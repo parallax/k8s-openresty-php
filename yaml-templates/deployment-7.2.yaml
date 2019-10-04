@@ -29,8 +29,6 @@ spec:
       volumes:
         - name: shared-files
           emptyDir: {}
-        - name: run
-          emptyDir: {}
         - name: uploads
           emptyDir: {}
       containers:
@@ -65,8 +63,6 @@ spec:
         volumeMounts:
           - name: shared-files
             mountPath: /src-shared
-          - name: run
-            mountPath: /run
           - name: uploads
             mountPath: /var/nginx-uploads
       - name: openresty
@@ -106,8 +102,6 @@ spec:
         volumeMounts:
           - name: shared-files
             mountPath: /src-shared
-          - name: run
-            mountPath: /run
           - name: uploads
             mountPath: /var/nginx-uploads
       dnsPolicy: ClusterFirst
