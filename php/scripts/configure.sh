@@ -199,7 +199,3 @@ printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "MAIL_HOST:" "$MAIL_HOST"
 printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "MAIL_PORT:" "$MAIL_PORT"
 printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "MAIL_DRIVER:" "$MAIL_DRIVER"
 printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "MAIL_DRIVER:" "$MAIL_DRIVER"
-
-cp -R /src/. /src-shared/
-rm -rf /src
-chown -R nobody:nobody /src-shared
