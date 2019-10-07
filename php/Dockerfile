@@ -354,6 +354,10 @@ RUN unset DEPS && rm -rf /run/php && rm -rf /run/php-fpm7.3
 ADD /php/scripts/start.sh /start.sh
 RUN chmod +x /start.sh
 
+# Start cron script
+ADD /php/scripts/start-cron.sh /start-cron.sh
+RUN chmod +x /start-cron.sh
+
 # Configure script
 ADD /php/scripts/configure.sh /configure.sh
 RUN chmod +x /configure.sh
