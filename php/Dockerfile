@@ -358,6 +358,10 @@ RUN chmod +x /start.sh
 ADD /php/scripts/start-cron.sh /start-cron.sh
 RUN chmod +x /start-cron.sh
 
+# Start worker script
+ADD /php/scripts/start-worker.sh /start-worker.sh
+RUN chmod +x /start-worker.sh
+
 # Configure script
 ADD /php/scripts/configure.sh /configure.sh
 RUN chmod +x /configure.sh
