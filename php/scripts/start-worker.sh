@@ -7,4 +7,4 @@ chown -R nobody:nobody /src-shared
 
 cd /src-shared
 
-php artisan queue:work
+php artisan queue:work --timeout=1800 --tries=3
