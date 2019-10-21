@@ -91,6 +91,18 @@ fi
 # Print the real value
 printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "PHP Memory Max:" "`php -r 'echo ini_get("memory_limit");'`"
 
+# PHP Max Input Vars
+# If set
+if [ ! -z "$PHP_MAX_INPUT_VARS" ]; then
+    
+    # Set PHP.ini accordingly
+    sed -i -e "s#max_input_vars = 1000#max_input_vars = ${PHP_MAX_INPUT_VARS}#g" /etc/php/current/php.ini
+
+fi
+
+# Print the real value
+printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "PHP Max Input Vars:" "`php -r 'echo ini_get("max_input_vars");'`"
+
 # PHP Opcache
 # If not set
 if [ -z "$DISABLE_OPCACHE" ]; then
