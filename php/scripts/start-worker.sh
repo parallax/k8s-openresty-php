@@ -7,4 +7,12 @@ chown -R nobody:nobody /src-shared
 
 cd /src-shared
 
-php artisan queue:work --timeout=1800 --tries=3
+# Consume any env vars passed in
+if [ -z "$WORKER_TIMEOUT" ]; then
+	export WORKER_TIMEOUT=1800
+fi
+if [ -z "$WORKER_TRIES" ]; then
+	export WORKER_TRIES=3
+fi
+
+php artisan queue:work --timeout=$WORKER_TIMEOUT --tries=$WORKER_TRIES
