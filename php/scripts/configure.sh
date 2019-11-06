@@ -200,7 +200,7 @@ if [ "$ENVIRONMENT" == 'qa' ] || [ -z "$ENVIRONMENT" ]; then
 fi
 
 if [ -z "$MAIL_DRIVER" ]; then
-    export MAIL_DRIVER=mail
+    export MAIL_DRIVER=smtp
 fi
 
 if [ -z "$MAIL_PORT" ]; then
