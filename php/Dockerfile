@@ -92,7 +92,7 @@ RUN if [ "$PHP_VERSION" == "7.1" ]; then \
 	RUN set -x \
     	&& echo "https://repos.php.earth/alpine/v3.9" >> /etc/apk/repositories
 
-	apk add --no-cache \ 
+	RUN apk add --no-cache \ 
 		php$PHP_VERSION \
 		php$PHP_VERSION-phar \
 		php$PHP_VERSION-bcmath \
@@ -159,7 +159,7 @@ RUN if [ "$PHP_VERSION" == "7.2" ]; then \
 	RUN set -x \
     	&& echo "https://repos.php.earth/alpine/v3.9" >> /etc/apk/repositories
 
-	apk add --no-cache \ 
+	RUN apk add --no-cache \ 
 		php$PHP_VERSION \
 		php$PHP_VERSION-phar \
 		php$PHP_VERSION-bcmath \
@@ -226,7 +226,7 @@ RUN if [ "$PHP_VERSION" == "7.3" ]; then \
 	RUN set -x \
     	&& echo "https://repos.php.earth/alpine/v3.9" >> /etc/apk/repositories
 
-	apk add --no-cache \ 
+	RUN apk add --no-cache \ 
 		php$PHP_VERSION \
 		php$PHP_VERSION-phar \
 		php$PHP_VERSION-bcmath \
@@ -293,7 +293,7 @@ RUN if [ "$PHP_VERSION" == "7.4" ]; then \
 	RUN set -x \
 	    && echo "https://dl.bintray.com/php-alpine/v3.9/php-7.4" >> /etc/apk/repositories
 
-	apk add --no-cache \ 
+	RUN apk add --no-cache \ 
 		php \
 		php-phar \
 		php-bcmath \
@@ -366,7 +366,7 @@ RUN EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)
     RESULT=$? && \
     rm composer-setup.php && \
     exit $RESULT
-    
+
 RUN if [ "$ATATUS_ENABLED" == "TRUE" ]; then \
 	# Atatus
 	RUN wget https://s3.amazonaws.com/atatus-artifacts/atatus-php/downloads/atatus-php-$ATATUS_VERSION-x64-musl.tar.gz && tar -xzvf atatus-php-$ATATUS_VERSION-x64-musl.tar.gz && cd atatus-php-$ATATUS_VERSION-x64-musl && ./install.sh && rm -f /atatus-php-$ATATUS_VERSION-x64-musl.tar.gz && rm -rf /atatus-php-$ATATUS_VERSION-x64-musl
