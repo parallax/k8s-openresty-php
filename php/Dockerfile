@@ -87,12 +87,12 @@ RUN apk add --no-cache \
 RUN if [ "$PHP_VERSION" == "7.1" ]; then \
 
 	# PHP.earth Alpine repository for better developer experience
-	ADD https://repos.php.earth/alpine/phpearth.rsa.pub /etc/apk/keys/phpearth.rsa.pub
+	wget https://repos.php.earth/alpine/phpearth.rsa.pub -O /etc/apk/keys/phpearth.rsa.pub \
 	
-	RUN set -x \
-    	&& echo "https://repos.php.earth/alpine/v3.9" >> /etc/apk/repositories
+	&& set -x && \
+   	echo "https://repos.php.earth/alpine/v3.9" >> /etc/apk/repositories \
 
-	RUN apk add --no-cache \ 
+	&& apk add --no-cache \ 
 		php$PHP_VERSION \
 		php$PHP_VERSION-phar \
 		php$PHP_VERSION-bcmath \
@@ -145,21 +145,22 @@ RUN if [ "$PHP_VERSION" == "7.1" ]; then \
 		php$PHP_VERSION-posix \
 		php$PHP_VERSION-xmlrpc \
 		php$PHP_VERSION-fpm \
-		php$PHP_VERSION-apcu; \
+		php$PHP_VERSION-apcu && \
 
-		# Symlink current version
-		RUN ln -snf /etc/php/$PHP_VERSION /etc/php/current
+	# Symlink current version
+	ln -snf /etc/php/$PHP_VERSION /etc/php/current; \
+	
 	fi
 
 RUN if [ "$PHP_VERSION" == "7.2" ]; then \
 
 	# PHP.earth Alpine repository for better developer experience
-	ADD https://repos.php.earth/alpine/phpearth.rsa.pub /etc/apk/keys/phpearth.rsa.pub
+	wget https://repos.php.earth/alpine/phpearth.rsa.pub -O /etc/apk/keys/phpearth.rsa.pub && \
 	
-	RUN set -x \
-    	&& echo "https://repos.php.earth/alpine/v3.9" >> /etc/apk/repositories
+	set -x \
+    && echo "https://repos.php.earth/alpine/v3.9" >> /etc/apk/repositories && \
 
-	RUN apk add --no-cache \ 
+	apk add --no-cache \ 
 		php$PHP_VERSION \
 		php$PHP_VERSION-phar \
 		php$PHP_VERSION-bcmath \
@@ -212,21 +213,21 @@ RUN if [ "$PHP_VERSION" == "7.2" ]; then \
 		php$PHP_VERSION-posix \
 		php$PHP_VERSION-xmlrpc \
 		php$PHP_VERSION-fpm \
-		php$PHP_VERSION-apcu; \
+		php$PHP_VERSION-apcu && \
 
 		# Symlink current version
-		RUN ln -snf /etc/php/$PHP_VERSION /etc/php/current
+		ln -snf /etc/php/$PHP_VERSION /etc/php/current; \
 	fi
 
 RUN if [ "$PHP_VERSION" == "7.3" ]; then \
 
 	# PHP.earth Alpine repository for better developer experience
-	ADD https://repos.php.earth/alpine/phpearth.rsa.pub /etc/apk/keys/phpearth.rsa.pub
+	wget https://repos.php.earth/alpine/phpearth.rsa.pub -O /etc/apk/keys/phpearth.rsa.pub && \
 	
 	RUN set -x \
-    	&& echo "https://repos.php.earth/alpine/v3.9" >> /etc/apk/repositories
+    	&& echo "https://repos.php.earth/alpine/v3.9" >> /etc/apk/repositories && \
 
-	RUN apk add --no-cache \ 
+	apk add --no-cache \ 
 		php$PHP_VERSION \
 		php$PHP_VERSION-phar \
 		php$PHP_VERSION-bcmath \
@@ -279,21 +280,21 @@ RUN if [ "$PHP_VERSION" == "7.3" ]; then \
 		php$PHP_VERSION-posix \
 		php$PHP_VERSION-xmlrpc \
 		php$PHP_VERSION-fpm \
-		php$PHP_VERSION-apcu; \
+		php$PHP_VERSION-apcu && \
 
 		# Symlink current version
-		RUN ln -snf /etc/php/$PHP_VERSION /etc/php/current
+		RUN ln -snf /etc/php/$PHP_VERSION /etc/php/current; \
 	fi
 
 RUN if [ "$PHP_VERSION" == "7.4" ]; then \
 
-	# Codecasts PHP repo
-	ADD https://dl.bintray.com/php-alpine/key/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.pub
+	# Codecasts PHP repow
+	wget https://dl.bintray.com/php-alpine/key/php-alpine.rsa.pub -O /etc/apk/keys/php-alpine.rsa.pub && \
 	
-	RUN set -x \
-	    && echo "https://dl.bintray.com/php-alpine/v3.9/php-7.4" >> /etc/apk/repositories
+	set -x \
+	&& echo "https://dl.bintray.com/php-alpine/v3.9/php-7.4" >> /etc/apk/repositories && \
 
-	RUN apk add --no-cache \ 
+	apk add --no-cache \ 
 		php \
 		php-phar \
 		php-bcmath \
@@ -340,15 +341,15 @@ RUN if [ "$PHP_VERSION" == "7.4" ]; then \
 		php-posix \
 		php-xmlrpc \
 		php-fpm \
-		php-apcu; \
+		php-apcu && \
 
-	RUN ln -snf /usr/bin/php7 /usr/bin/php
-	RUN ln -snf /usr/sbin/php-fpm7 /usr/sbin/php-fpm
+	ln -snf /usr/bin/php7 /usr/bin/php && \
+	ln -snf /usr/sbin/php-fpm7 /usr/sbin/php-fpm && \
 
 
 	# Symlink current version
-	RUN mkdir -p /etc/php/current
-	RUN ln -snf /etc/php7 /etc/php/current
+	mkdir -p /etc/php/current && \
+	ln -snf /etc/php7 /etc/php/current; \
 
 	fi
 
@@ -369,12 +370,12 @@ RUN EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)
 
 RUN if [ "$ATATUS_ENABLED" == "TRUE" ]; then \
 	# Atatus
-	RUN wget https://s3.amazonaws.com/atatus-artifacts/atatus-php/downloads/atatus-php-$ATATUS_VERSION-x64-musl.tar.gz && tar -xzvf atatus-php-$ATATUS_VERSION-x64-musl.tar.gz && cd atatus-php-$ATATUS_VERSION-x64-musl && ./install.sh && rm -f /atatus-php-$ATATUS_VERSION-x64-musl.tar.gz && rm -rf /atatus-php-$ATATUS_VERSION-x64-musl
-	RUN sed -i -e 's#atatus.trace.response_time = 2000#atatus.trace.response_time = 1500#g' /etc/php/$PHP_VERSION/conf.d/atatus.ini && \
+	wget https://s3.amazonaws.com/atatus-artifacts/atatus-php/downloads/atatus-php-$ATATUS_VERSION-x64-musl.tar.gz && tar -xzvf atatus-php-$ATATUS_VERSION-x64-musl.tar.gz && cd atatus-php-$ATATUS_VERSION-x64-musl && ./install.sh && rm -f /atatus-php-$ATATUS_VERSION-x64-musl.tar.gz && rm -rf /atatus-php-$ATATUS_VERSION-x64-musl && \
+	sed -i -e 's#atatus.trace.response_time = 2000#atatus.trace.response_time = 1500#g' /etc/php/$PHP_VERSION/conf.d/atatus.ini && \
 	  sed -i -e 's#atatus.collector.pidfile = "/var/run/atatus-php-collector.pid"#atatus.collector.pidfile = "/run/atatus-php-collector.pid"#g' /etc/php/$PHP_VERSION/conf.d/atatus.ini && \
-	  sed -i -e 's#atatus.collector.connection = "/tmp/.atatus.sock"#atatus.collector.connection = "/run/atatus.sock"#g' /etc/php/$PHP_VERSION/conf.d/atatus.ini
+	  sed -i -e 's#atatus.collector.connection = "/tmp/.atatus.sock"#atatus.collector.connection = "/run/atatus.sock"#g' /etc/php/$PHP_VERSION/conf.d/atatus.ini && \
 	# Write log files to stdout
-	RUN rm -f /var/log/atatus/agent.log && rm -f /var/log/atatus/collector.log && rm -f /var/log/atatus/debug.txt && ln -sf /dev/null /var/log/atatus/agent.log && ln -sf /dev/null /var/log/atatus/collector.log && ln -sf /dev/null /var/log/atatus/debug.txt
+	rm -f /var/log/atatus/agent.log && rm -f /var/log/atatus/collector.log && rm -f /var/log/atatus/debug.txt && ln -sf /dev/null /var/log/atatus/agent.log && ln -sf /dev/null /var/log/atatus/collector.log && ln -sf /dev/null /var/log/atatus/debug.txt; \
 	fi
 
 # PHP Config
