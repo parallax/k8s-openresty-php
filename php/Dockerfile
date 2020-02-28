@@ -224,8 +224,8 @@ RUN if [ "$PHP_VERSION" == "7.3" ]; then \
 	# PHP.earth Alpine repository for better developer experience
 	wget https://repos.php.earth/alpine/phpearth.rsa.pub -O /etc/apk/keys/phpearth.rsa.pub && \
 	
-	RUN set -x \
-    	&& echo "https://repos.php.earth/alpine/v3.9" >> /etc/apk/repositories && \
+	set -x \
+    && echo "https://repos.php.earth/alpine/v3.9" >> /etc/apk/repositories && \
 
 	apk add --no-cache \ 
 		php$PHP_VERSION \
