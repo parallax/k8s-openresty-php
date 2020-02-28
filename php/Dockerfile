@@ -283,7 +283,7 @@ RUN if [ "$PHP_VERSION" == "7.3" ]; then \
 		php$PHP_VERSION-apcu && \
 
 		# Symlink current version
-		RUN ln -snf /etc/php/$PHP_VERSION /etc/php/current; \
+		ln -snf /etc/php/$PHP_VERSION /etc/php/current; \
 	fi
 
 RUN if [ "$PHP_VERSION" == "7.4" ]; then \
