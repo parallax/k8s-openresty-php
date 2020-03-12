@@ -1,7 +1,7 @@
 FROM alpine:3.9
 
 ARG PHP_VERSION=7.3
-ARG ATATUS_VERSION=1.8.0
+ARG ATATUS_VERSION=1.9.0
 ARG ATATUS_ENABLED=TRUE
 
 ENV \
@@ -348,7 +348,7 @@ RUN if [ "$PHP_VERSION" == "7.4" ]; then \
 
 
 	# Symlink current version
-	mkdir -p /etc/php/current && \
+	mkdir /etc/php && \
 	ln -snf /etc/php7 /etc/php/current; \
 
 	fi
@@ -371,9 +371,9 @@ RUN EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)
 RUN if [ "$ATATUS_ENABLED" == "TRUE" ]; then \
 	# Atatus
 	wget https://s3.amazonaws.com/atatus-artifacts/atatus-php/downloads/atatus-php-$ATATUS_VERSION-x64-musl.tar.gz && tar -xzvf atatus-php-$ATATUS_VERSION-x64-musl.tar.gz && cd atatus-php-$ATATUS_VERSION-x64-musl && ./install.sh && rm -f /atatus-php-$ATATUS_VERSION-x64-musl.tar.gz && rm -rf /atatus-php-$ATATUS_VERSION-x64-musl && \
-	sed -i -e 's#atatus.trace.response_time = 2000#atatus.trace.response_time = 1500#g' /etc/php/$PHP_VERSION/conf.d/atatus.ini && \
-	  sed -i -e 's#atatus.collector.pidfile = "/var/run/atatus-php-collector.pid"#atatus.collector.pidfile = "/run/atatus-php-collector.pid"#g' /etc/php/$PHP_VERSION/conf.d/atatus.ini && \
-	  sed -i -e 's#atatus.collector.connection = "/tmp/.atatus.sock"#atatus.collector.connection = "/run/atatus.sock"#g' /etc/php/$PHP_VERSION/conf.d/atatus.ini && \
+	sed -i -e 's#atatus.trace.response_time = 2000#atatus.trace.response_time = 1500#g' /etc/php/current/conf.d/atatus.ini && \
+	  sed -i -e 's#atatus.collector.pidfile = "/var/run/atatus-php-collector.pid"#atatus.collector.pidfile = "/run/atatus-php-collector.pid"#g' /etc/php/current/conf.d/atatus.ini && \
+	  sed -i -e 's#atatus.collector.connection = "/tmp/.atatus.sock"#atatus.collector.connection = "/run/atatus.sock"#g' /etc/php/current/conf.d/atatus.ini && \
 	# Write log files to stdout
 	rm -f /var/log/atatus/agent.log && rm -f /var/log/atatus/collector.log && rm -f /var/log/atatus/debug.txt && ln -sf /dev/null /var/log/atatus/agent.log && ln -sf /dev/null /var/log/atatus/collector.log && ln -sf /dev/null /var/log/atatus/debug.txt; \
 	fi
