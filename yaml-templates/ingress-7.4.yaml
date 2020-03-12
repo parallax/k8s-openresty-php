@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - https
   routes:
-  - match: Host(`php74-test.parallax.dev}`)
+  - match: Host(`php74-test.parallax.dev`)
     kind: Rule
     services:
     - name: 'openresty-74-test'
