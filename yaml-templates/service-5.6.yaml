@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'openresty-56-test'
+  namespace: k8s-openresty-php
+spec:
+  ports:
+  - name: openresty
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: 'k8s-openresty-php-56-test'
+  sessionAffinity: None
+  type: ClusterIP

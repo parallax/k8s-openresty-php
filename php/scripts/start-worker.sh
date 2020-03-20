@@ -14,5 +14,8 @@ fi
 if [ -z "$WORKER_TRIES" ]; then
 	export WORKER_TRIES=3
 fi
+if [ -n "$EXPOSE_CLASSIC" ]; then
+	ln -s /src-shared/ /src
+fi
 
 php artisan queue:work --timeout=$WORKER_TIMEOUT --tries=$WORKER_TRIES
