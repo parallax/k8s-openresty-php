@@ -3,17 +3,21 @@
 > A set of relatively clean but full-featured, split solution to running openresty and php-fpm together but in seperate containers, supporting PHP versions 5.6, 7.1, 7.2, 7.3, 7.4 maintained by [Parallax](https://parall.ax/)
 
 ## Docker Tags 
+|openresty      | Docker tag                                      |
+| ------------- | -------------                                   |
+| 1.15.8.2      | prlx/k8s-openresty-php-openresty:release-latest |
 
-| PHP           | openresty     | Docker tag                           |
-| ------------- | ------------- | -------------                        |
-| 5.6           | 1.15.8.2      | prlx/prlx-nginx-php-fpm:5.6-master   |
-| 7.1           | 1.15.8.2      | prlx/prlx-nginx-php-fpm:7.1-master   |
-| 7.2           | 1.15.8.2      | prlx/prlx-nginx-php-fpm:7.2-master   |
-| 7.3           | 1.15.8.2      | prlx/prlx-nginx-php-fpm:7.3-master   |
-| 7.4           | 1.15.8.2      | prlx/prlx-nginx-php-fpm:7.4-master   |
+| PHP           | Docker Tag                                          |
+| ------------- | -------------                                       |
+| 5.6           | prlx/k8s-openresty-php-php:release-php-5.6-latest   |
+| 7.1           | prlx/k8s-openresty-php-php:release-php-7.1-latest   |
+| 7.2           | prlx/k8s-openresty-php-php:release-php-7.2-latest   |
+| 7.3           | prlx/k8s-openresty-php-php:release-php-7.3-latest   |
+| 7.4           | prlx/k8s-openresty-php-php:release-php-7.4-latest   |
 
 ## Browse all tags on Docker Hub
 [Openresty](https://hub.docker.com/r/prlx/k8s-openresty-php-openresty)
+
 [PHP](https://hub.docker.com/r/prlx/k8s-openresty-php-php)
 
 # Environment Variables
@@ -53,19 +57,141 @@ It is also the default behaviour for the docker containers meaning you don't nee
 | Service                                                                                  | Description                                             | Port/Socket         |
 | -------------                                                                            | -------------                                           | -------------       |
 | [Openresty](https://openresty.org/)                                                      | Web server                                              | 0.0.0.0:80          |
-| [PHP-FPM](https://php-fpm.org/)                                                          | PHP running as a pool of workers                        | /run/php.sock       |
+| [PHP-FPM](https://php-fpm.org/)                                                          | PHP running as a pool of workers                        | 127.0.0.1:9000       |
 
-## Example Container
+## K8s Example
 
-There is an example container in [test/](test/). To run it:
-
-```bash
-cd test
-docker build -f Dockerfile-PHPVERSION -t example .
-docker run -p 8080:80 example
+### deployment.yaml
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+  labels:
+    app: 'k8s-openresty-php-74-test'
+  name: 'k8s-openresty-php-74-test'
+  namespace: k8s-openresty-php
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: 'k8s-openresty-php-74-test'
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+      labels:
+        app: 'k8s-openresty-php-74-test'
+    spec:
+      volumes:
+        - name: shared-files
+          emptyDir: {}
+        - name: uploads
+          emptyDir: {}
+      containers:
+      - name: php
+        image: '{{ PHP7.4IMAGEHERE }}'
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 1
+          exec:
+            command:
+            - /healthcheck.sh
+            - --listen-queue=10 # fails if there are more than 10 processes waiting in the fpm queue
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 1
+          exec:
+            command:
+            - /healthcheck.sh
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: "1"
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+        volumeMounts:
+          - name: shared-files
+            mountPath: /src-shared
+          - name: uploads
+            mountPath: /var/nginx-uploads
+      - name: openresty
+        image: '{{ OPENRESTYIMAGEHERE }}'
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: openresty
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: openresty
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 2
+          timeoutSeconds: 2
+        ports:
+        - containerPort: 80
+          name: openresty
+          protocol: TCP
+        resources:
+          limits:
+            cpu: "1"
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+        volumeMounts:
+          - name: shared-files
+            mountPath: /src-shared
+          - name: uploads
+            mountPath: /var/nginx-uploads
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 20
 ```
-
-You should be able to visit the container on http://127.0.0.1:8080/ and see the contents of index.php from /examples/hello-world/src.
+### service.yaml
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'openresty-74-test'
+  namespace: k8s-openresty-php
+spec:
+  ports:
+  - name: openresty
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: 'k8s-openresty-php-74-test'
+  sessionAffinity: None
+  type: ClusterIP
+```
 
 # Custom Startup Scripts
 
@@ -73,9 +199,9 @@ You can add behaviour to the built-in startup scripts for web, worker or both mo
 
 | File Path          | Runs on |
 | ---                | ---     |
-| /startup-all.sh    | All     |
-| /startup-web.sh    | Web     |
-| /startup-worker.sh | Worker  |
+| /start.sh          | Web     |
+| /start-worker.sh   | Worker  |
+| /start-cron.sh     | Cron    |
 
 # The worker mode/command
 
