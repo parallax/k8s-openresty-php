@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ $MODSEC == 'true' ]; then
+if [ "$MODSEC" == 'true' ]; then
 	echo "ModSecurity Enforced"
 	sed -i -e "s#SecRuleEngine DetectionOnly#SecRuleEngine on#g" /etc/nginx/modsec/rules/conf/tortix_waf.conf
 else
