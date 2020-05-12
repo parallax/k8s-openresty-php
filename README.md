@@ -18,6 +18,29 @@
 ## Browse all tags on Docker Hub
 [Openresty](https://hub.docker.com/r/prlx/k8s-openresty-php-openresty)
 
+Openresty now has support for ModSecurity. It uses the Atomicorp rules and you will need to pass build arguments as follows:
+
+```
+docker build --build-arg ATOMICORP_USER=XXXXXX --build-arg ATOMICORP_PASS=XXXXXX -t mytag -f openresty/Dockerfile .
+```
+
+When Openresty boots, passing an environment variable of "MODSEC" as "true" will enable SecRuleEngine on in the ModSecurity configuration where the default is SecRuleEngine DetectionOnly.
+
+There is a whitelist.conf file in the root (/whitelist.conf, symlinked from the rules directory in /etc/nginx/modsec/rules) which can be used either as a configmap file or otherwise to remove certain rules from ModSecurity processing:
+
+```
+SecRuleRemoveById 920273
+SecRuleRemoveById 920274 920275
+SecRuleRemoveById "920276-920280"
+```
+
+There is also an IP whitelist file at /etc/asl/whitelist which can be used to whitelist IP addresses through the WAF (one per line)
+
+```
+172.17.0.1
+172.17.0.0/24
+```
+
 [PHP](https://hub.docker.com/r/prlx/k8s-openresty-php-php)
 
 # Environment Variables
