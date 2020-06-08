@@ -125,6 +125,14 @@ RUN	apk add --no-cache \
   		php5-mysqli \
   		php5-mysql
 
+RUN	ln -snf /usr/bin/php5 /usr/bin/php && \
+	ln -snf /usr/bin/php-fpm5 /usr/sbin/php-fpm
+
+
+	# Symlink current version
+RUN	mkdir /etc/php && \
+	ln -snf /etc/php5 /etc/php/current
+
   	# Imagick
 RUN apk --no-cache add ca-certificates wget && \
 	  apk add --no-cache imagemagick-dev && \
@@ -143,14 +151,6 @@ RUN	apk --no-cache add ca-certificates wget && \
 	  wget https://github.com/sgerrand/alpine-pkg-php5-redis/releases/download/3.1.6-r0/php5-redis-3.1.6-r0.apk && \
 	  apk add php5-redis-3.1.6-r0.apk && \
 	  rm -f php5-redis-3.1.6-r0.apk
-
-RUN	ln -snf /usr/bin/php5 /usr/bin/php && \
-	ln -snf /usr/bin/php-fpm5 /usr/sbin/php-fpm
-
-
-	# Symlink current version
-RUN	mkdir /etc/php && \
-	ln -snf /etc/php5 /etc/php/current
 
 
 # Composer
