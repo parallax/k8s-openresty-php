@@ -142,6 +142,8 @@ RUN apk add --no-cache autoconf php5-dev gcc make g++ zlib-dev wget imagemagick-
     make && \
     cp modules/imagick.so /usr/lib/php5/modules/ && echo "extension=imagick.so" > /etc/php5/conf.d/imagick.ini && \
     apk del autoconf php5-dev gcc make g++ zlib-dev
+
+RUN rm -rf /imagick
 	
 	# Imagick support file types
 RUN	apk add --no-cache imagemagick
