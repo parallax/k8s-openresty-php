@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.8
 
 ARG PHP_VERSION=5.6
 ARG ATATUS_VERSION=1.9.0
@@ -133,14 +133,15 @@ RUN	ln -snf /usr/bin/php5 /usr/bin/php && \
 RUN	mkdir /etc/php && \
 	ln -snf /etc/php5 /etc/php/current
 
-  	# Imagick
-RUN apk --no-cache add ca-certificates wget && \
-	  apk add --no-cache imagemagick-dev && \
-	  wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-php5-imagick/master/sgerrand.rsa.pub && \
-	  wget https://github.com/sgerrand/alpine-pkg-php5-imagick/releases/download/3.4.3-r0/php5-imagick-3.4.3-r0.apk && \
-	  apk add php5-imagick-3.4.3-r0.apk && \
-	  apk del imagemagick-dev && \
-	  rm -f php5-imagick-3.4.3-r0.apk
+# Imagick
+RUN apk add --no-cache autoconf php5-dev gcc make g++ zlib-dev wget imagemagick-dev && \
+    mkdir /imagick && cd /imagick && \
+    wget http://pecl.php.net/get/imagick-3.4.4.tgz && \
+    tar xzf imagick-3.4.4.tgz && cd imagick-3.4.4 && \
+    phpize5 && ./configure --prefix=/usr --with-php-config=php-config5 && \
+    make && \
+    cp modules/imagick.so /usr/lib/php5/modules/ && echo "extension=imagick.so" > /etc/php5/conf.d/imagick.ini && \
+    apk del autoconf php5-dev gcc make g++ zlib-dev
 	
 	# Imagick support file types
 RUN	apk add --no-cache imagemagick
