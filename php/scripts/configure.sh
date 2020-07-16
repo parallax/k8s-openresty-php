@@ -207,7 +207,11 @@ if [ -z "$MAIL_PORT" ]; then
     export MAIL_PORT=25
 fi
 
+if [ -z "$MAIL_ENCRYPTION" ]; then
+    export MAIL_ENCRYPTION=null
+fi
+
 printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "MAIL_HOST:" "$MAIL_HOST"
 printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "MAIL_PORT:" "$MAIL_PORT"
 printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "MAIL_DRIVER:" "$MAIL_DRIVER"
-printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "MAIL_DRIVER:" "$MAIL_DRIVER"
+printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "MAIL_ENCRYPTION:" "$MAIL_ENCRYPTION"
