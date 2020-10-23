@@ -82,7 +82,8 @@ RUN apk add --no-cache \
     wget \
     curl \
     bash \
-    fcgi
+    fcgi \
+    nano
 
 RUN if [ "$PHP_VERSION" == "7.1" ]; then \
 
