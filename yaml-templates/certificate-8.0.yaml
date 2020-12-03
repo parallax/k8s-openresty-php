@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: 'php80-test-ssl'
+  namespace: 'k8s-openresty-php'
+spec:
+  dnsNames:
+  - 'php80-test.parallax.dev'
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  secretName: 'php80-test-ssl'

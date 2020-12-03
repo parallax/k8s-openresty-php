@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+  labels:
+    app: 'k8s-openresty-php-80-test'
+  name: 'k8s-openresty-php-80-test'
+  namespace: k8s-openresty-php
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: 'k8s-openresty-php-80-test'
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+      labels:
+        app: 'k8s-openresty-php-80-test'
+    spec:
+      volumes:
+        - name: shared-files
+          emptyDir: {}
+        - name: uploads
+          emptyDir: {}
+      containers:
+      - name: php
+        image: '{{ PHP8.0IMAGEHERE }}'
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 1
+          exec:
+            command:
+            - /healthcheck.sh
+            - --listen-queue=10 # fails if there are more than 10 processes waiting in the fpm queue
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 1
+          exec:
+            command:
+            - /healthcheck.sh
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: "1"
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+        volumeMounts:
+          - name: shared-files
+            mountPath: /src-shared
+          - name: uploads
+            mountPath: /var/nginx-uploads
+      - name: openresty
+        image: '{{ OPENRESTYIMAGEHERE }}'
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: openresty
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthz
+            port: openresty
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          successThreshold: 2
+          timeoutSeconds: 2
+        ports:
+        - containerPort: 80
+          name: openresty
+          protocol: TCP
+        resources:
+          limits:
+            cpu: "1"
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+        volumeMounts:
+          - name: shared-files
+            mountPath: /src-shared
+          - name: uploads
+            mountPath: /var/nginx-uploads
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 20
