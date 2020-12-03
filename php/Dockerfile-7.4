@@ -401,6 +401,4 @@ RUN chmod +x /configure.sh
 ADD /php/scripts/healthcheck.sh /healthcheck.sh
 RUN chmod +x /healthcheck.sh
 
-RUN composer global require hirak/prestissimo
-
 CMD ["/start.sh"]
