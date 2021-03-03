@@ -14,6 +14,7 @@
 | 7.2           | prlx/k8s-openresty-php-php:release-php-7.2-latest   |
 | 7.3           | prlx/k8s-openresty-php-php:release-php-7.3-latest   |
 | 7.4           | prlx/k8s-openresty-php-php:release-php-7.4-latest   |
+| 8.0           | prlx/k8s-openresty-php-php:release-php-8.0-latest   |
 
 ## Browse all tags on Docker Hub
 [Openresty](https://hub.docker.com/r/prlx/k8s-openresty-php-openresty)
