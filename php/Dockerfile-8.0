@@ -1,8 +1,8 @@
-FROM alpine:3.12
+FROM alpine:3.13
 
 ARG PHP_VERSION=8
-ARG ATATUS_VERSION=1.10.2
-ARG ATATUS_ENABLED=FALSE
+ARG ATATUS_VERSION=1.11.0
+ARG ATATUS_ENABLED=TRUE
 
 ENV \
     # When using Composer, disable the warning about running commands as root/super user
@@ -63,50 +63,42 @@ RUN apk add --no-cache \
     curl \
     bash \
     fcgi \
-    nano
-
-	# Codecasts PHP repow
-	RUN wget https://dl.bintray.com/php-alpine/key/php-alpine.rsa.pub -O /etc/apk/keys/php-alpine.rsa.pub && \
-	
-	set -x \
-	&& echo "https://dl.bintray.com/php-alpine/v3.12/php-8.0" >> /etc/apk/repositories && \
-
-    apk add --no-cache \
-            php8 \
-            php8-common \
-            php8-curl \
-            php8-dom \
-            php8-exif \
-            php8-ftp \
-            php8-gd \
-            php8-iconv \
-            php8-mysqli \
-            php8-openssl \
-            php8-pdo \
-            php8-posix \
-            php8-soap \
-            php8-session \
-            php8-redis \
-            php8-zip \
-            php8-ldap \
-            php8-bcmath \
-            php8-calendar \
-            php8-gettext \
-            php8-pcntl \
-            php8-phar \
-            php8-sockets \
-            php8-xmlreader \
-            php8-zip \
-            php8-zlib \
-            php8-xsl \
-            php8-opcache \
-            php8-ctype \
-            php8-pdo_mysql \
-            php8-pdo_sqlite \
-            php8-sqlite3 \
-            php8-intl \
-            php8-fpm \
-            php8-mysqli && \
+    nano \
+    php8 \
+    php8-common \
+    php8-curl \
+    php8-dom \
+    php8-exif \
+    php8-ftp \
+    php8-gd \
+    php8-iconv \
+    php8-mysqli \
+    php8-openssl \
+    php8-pdo \
+    php8-posix \
+    php8-soap \
+    php8-session \
+    php8-redis \
+    php8-zip \
+    php8-ldap \
+    php8-bcmath \
+    php8-calendar \
+    php8-gettext \
+    php8-pcntl \
+    php8-phar \
+    php8-sockets \
+    php8-xmlreader \
+    php8-zip \
+    php8-zlib \
+    php8-xsl \
+    php8-opcache \
+    php8-ctype \
+    php8-pdo_mysql \
+    php8-pdo_sqlite \
+    php8-sqlite3 \
+    php8-intl \
+    php8-fpm \
+    php8-mysqli && \
 
 	ln -snf /usr/bin/php8 /usr/bin/php && \
 	ln -snf /usr/sbin/php-fpm8 /usr/sbin/php-fpm && \
