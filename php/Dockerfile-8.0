@@ -13,7 +13,7 @@ ENV \
         php8-curl \
         php8-dom \
         php8-exif \
-	php8-fileinfo \
+        php8-fileinfo \
         php8-ftp \
         php8-gd \
         php8-iconv \
@@ -27,11 +27,12 @@ ENV \
         php8-bcmath \
         php8-calendar \
         php8-gettext \
+        php8-mbstring \
         php8-pcntl \
         php8-phar \
-	php8-simplexml \
+        php8-simplexml \
         php8-sockets \
-	php8-tokenizer \
+        php8-tokenizer \
         php8-xmlreader \
         php8-zip \
         php8-zlib \
@@ -76,6 +77,7 @@ RUN apk add --no-cache \
     php8-ftp \
     php8-gd \
     php8-iconv \
+    php8-mbstring \
     php8-mysqli \
     php8-openssl \
     php8-pdo \
