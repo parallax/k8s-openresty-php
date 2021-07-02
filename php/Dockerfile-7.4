@@ -1,6 +1,5 @@
-FROM alpine:3.10
+FROM alpine:3.14
 
-ARG PHP_VERSION=7.4
 ARG ATATUS_VERSION=1.9.0
 ARG ATATUS_ENABLED=TRUE
 
@@ -8,59 +7,59 @@ ENV \
     # When using Composer, disable the warning about running commands as root/super user
     COMPOSER_ALLOW_SUPERUSER=1 \
     # Persistent runtime dependencies
-    DEPS="php$PHP_VERSION \
-        php$PHP_VERSION-phar \
-        php$PHP_VERSION-bcmath \
-        php$PHP_VERSION-calendar \
-        php$PHP_VERSION-mbstring \
-        php$PHP_VERSION-exif \
-        php$PHP_VERSION-ftp \
-        php$PHP_VERSION-openssl \
-        php$PHP_VERSION-zip \
-        php$PHP_VERSION-sysvsem \
-        php$PHP_VERSION-sysvshm \
-        php$PHP_VERSION-sysvmsg \
-        php$PHP_VERSION-shmop \
-        php$PHP_VERSION-sockets \
-        php$PHP_VERSION-zlib \
-        php$PHP_VERSION-bz2 \
-        php$PHP_VERSION-curl \
-        php$PHP_VERSION-simplexml \
-        php$PHP_VERSION-xml \
-        php$PHP_VERSION-opcache \
-        php$PHP_VERSION-dom \
-        php$PHP_VERSION-xmlreader \
-        php$PHP_VERSION-xmlwriter \
-        php$PHP_VERSION-tokenizer \
-        php$PHP_VERSION-ctype \
-        php$PHP_VERSION-gd \
-        php$PHP_VERSION-gettext \
-        php$PHP_VERSION-imagick \
-        php$PHP_VERSION-intl \
-        php$PHP_VERSION-ldap \
-        php$PHP_VERSION-intl \
-        php$PHP_VERSION-memcached \
-        php$PHP_VERSION-mysqli \
-        php$PHP_VERSION-mysqlnd \
-        php$PHP_VERSION-pcntl \
-        php$PHP_VERSION-pdo \
-        php$PHP_VERSION-pdo_mysql \
-        php$PHP_VERSION-pdo_sqlite \
-        php$PHP_VERSION-redis \
-        php$PHP_VERSION-soap \
-        php$PHP_VERSION-sqlite3 \
-        php$PHP_VERSION-tidy \
-        php$PHP_VERSION-tokenizer \
-        php$PHP_VERSION-wddx \
-        php$PHP_VERSION-xsl \
-        php$PHP_VERSION-session \
-        php$PHP_VERSION-fileinfo \
-        php$PHP_VERSION-iconv \
-        php$PHP_VERSION-json \
-        php$PHP_VERSION-posix \
-        php$PHP_VERSION-xmlrpc \
-        php$PHP_VERSION-fpm \
-        php$PHP_VERSION-apcu \
+    DEPS="php7 \
+        php7-phar \
+        php7-bcmath \
+        php7-calendar \
+        php7-mbstring \
+        php7-exif \
+        php7-ftp \
+        php7-openssl \
+        php7-zip \
+        php7-sysvsem \
+        php7-sysvshm \
+        php7-sysvmsg \
+        php7-shmop \
+        php7-sockets \
+        php7-zlib \
+        php7-bz2 \
+        php7-curl \
+        php7-simplexml \
+        php7-xml \
+        php7-opcache \
+        php7-dom \
+        php7-xmlreader \
+        php7-xmlwriter \
+        php7-tokenizer \
+        php7-ctype \
+        php7-gd \
+        php7-gettext \
+        php7-imagick \
+        php7-intl \
+        php7-ldap \
+        php7-intl \
+        php7-memcached \
+        php7-mysqli \
+        php7-mysqlnd \
+        php7-pcntl \
+        php7-pdo \
+        php7-pdo_mysql \
+        php7-pdo_sqlite \
+        php7-redis \
+        php7-soap \
+        php7-sqlite3 \
+        php7-tidy \
+        php7-tokenizer \
+        php7-wddx \
+        php7-xsl \
+        php7-session \
+        php7-fileinfo \
+        php7-iconv \
+        php7-json \
+        php7-posix \
+        php7-xmlrpc \
+        php7-fpm \
+        php7-apcu \
         curl \
         ca-certificates \
         supervisor \
@@ -85,268 +84,61 @@ RUN apk add --no-cache \
     fcgi \
     nano
 
-RUN if [ "$PHP_VERSION" == "7.1" ]; then \
-	# PHP.earth Alpine repository for better developer experience
-	wget https://repos.php.earth/alpine/phpearth.rsa.pub -O /etc/apk/keys/phpearth.rsa.pub \
-	&& set -x && \
-   	echo "https://repos.php.earth/alpine/v3.9" >> /etc/apk/repositories \
-	&& apk add --no-cache \ 
-		php$PHP_VERSION \
-		php$PHP_VERSION-phar \
-		php$PHP_VERSION-bcmath \
-		php$PHP_VERSION-calendar \
-		php$PHP_VERSION-mbstring \
-		php$PHP_VERSION-exif \
-		php$PHP_VERSION-ftp \
-		php$PHP_VERSION-openssl \
-		php$PHP_VERSION-zip \
-		php$PHP_VERSION-sysvsem \
-		php$PHP_VERSION-sysvshm \
-		php$PHP_VERSION-sysvmsg \
-		php$PHP_VERSION-shmop \
-		php$PHP_VERSION-sockets \
-		php$PHP_VERSION-zlib \
-		php$PHP_VERSION-bz2 \
-		php$PHP_VERSION-curl \
-		php$PHP_VERSION-simplexml \
-		php$PHP_VERSION-xml \
-		php$PHP_VERSION-opcache \
-		php$PHP_VERSION-dom \
-		php$PHP_VERSION-xmlreader \
-		php$PHP_VERSION-xmlwriter \
-		php$PHP_VERSION-tokenizer \
-		php$PHP_VERSION-ctype \
-		php$PHP_VERSION-gd \
-		php$PHP_VERSION-gettext \
-		php$PHP_VERSION-imagick \
-		php$PHP_VERSION-intl \
-		php$PHP_VERSION-ldap \
-		php$PHP_VERSION-intl \
-		php$PHP_VERSION-memcached \
-		php$PHP_VERSION-mysqli \
-		php$PHP_VERSION-mysqlnd \
-		php$PHP_VERSION-pcntl \
-		php$PHP_VERSION-pdo \
-		php$PHP_VERSION-pdo_mysql \
-		php$PHP_VERSION-pdo_sqlite \
-		php$PHP_VERSION-redis \
-		php$PHP_VERSION-soap \
-		php$PHP_VERSION-sqlite3 \
-		php$PHP_VERSION-tidy \
-		php$PHP_VERSION-tokenizer \
-		php$PHP_VERSION-wddx \
-		php$PHP_VERSION-xsl \
-		php$PHP_VERSION-session \
-		php$PHP_VERSION-fileinfo \
-		php$PHP_VERSION-iconv \
-		php$PHP_VERSION-json \
-		php$PHP_VERSION-posix \
-		php$PHP_VERSION-xmlrpc \
-		php$PHP_VERSION-fpm \
-		php$PHP_VERSION-apcu && \
-	# Symlink current version
-	ln -snf /etc/php/$PHP_VERSION /etc/php/current; \
-	fi
-
-RUN if [ "$PHP_VERSION" == "7.2" ]; then \
-
-	# PHP.earth Alpine repository for better developer experience
-	wget https://repos.php.earth/alpine/phpearth.rsa.pub -O /etc/apk/keys/phpearth.rsa.pub && \
-	
-	set -x \
-    && echo "https://repos.php.earth/alpine/v3.9" >> /etc/apk/repositories && \
-
-	apk add --no-cache \ 
-		php$PHP_VERSION \
-		php$PHP_VERSION-phar \
-		php$PHP_VERSION-bcmath \
-		php$PHP_VERSION-calendar \
-		php$PHP_VERSION-mbstring \
-		php$PHP_VERSION-exif \
-		php$PHP_VERSION-ftp \
-		php$PHP_VERSION-openssl \
-		php$PHP_VERSION-zip \
-		php$PHP_VERSION-sysvsem \
-		php$PHP_VERSION-sysvshm \
-		php$PHP_VERSION-sysvmsg \
-		php$PHP_VERSION-shmop \
-		php$PHP_VERSION-sockets \
-		php$PHP_VERSION-zlib \
-		php$PHP_VERSION-bz2 \
-		php$PHP_VERSION-curl \
-		php$PHP_VERSION-simplexml \
-		php$PHP_VERSION-xml \
-		php$PHP_VERSION-opcache \
-		php$PHP_VERSION-dom \
-		php$PHP_VERSION-xmlreader \
-		php$PHP_VERSION-xmlwriter \
-		php$PHP_VERSION-tokenizer \
-		php$PHP_VERSION-ctype \
-		php$PHP_VERSION-gd \
-		php$PHP_VERSION-gettext \
-		php$PHP_VERSION-imagick \
-		php$PHP_VERSION-intl \
-		php$PHP_VERSION-ldap \
-		php$PHP_VERSION-intl \
-		php$PHP_VERSION-memcached \
-		php$PHP_VERSION-mysqli \
-		php$PHP_VERSION-mysqlnd \
-		php$PHP_VERSION-pcntl \
-		php$PHP_VERSION-pdo \
-		php$PHP_VERSION-pdo_mysql \
-		php$PHP_VERSION-pdo_sqlite \
-		php$PHP_VERSION-redis \
-		php$PHP_VERSION-soap \
-		php$PHP_VERSION-sqlite3 \
-		php$PHP_VERSION-tidy \
-		php$PHP_VERSION-tokenizer \
-		php$PHP_VERSION-wddx \
-		php$PHP_VERSION-xsl \
-		php$PHP_VERSION-session \
-		php$PHP_VERSION-fileinfo \
-		php$PHP_VERSION-iconv \
-		php$PHP_VERSION-json \
-		php$PHP_VERSION-posix \
-		php$PHP_VERSION-xmlrpc \
-		php$PHP_VERSION-fpm \
-		php$PHP_VERSION-apcu && \
-
-		# Symlink current version
-		ln -snf /etc/php/$PHP_VERSION /etc/php/current; \
-	fi
-
-RUN if [ "$PHP_VERSION" == "7.3" ]; then \
-
-	# PHP.earth Alpine repository for better developer experience
-	wget https://repos.php.earth/alpine/phpearth.rsa.pub -O /etc/apk/keys/phpearth.rsa.pub && \
-	
-	set -x \
-    && echo "https://repos.php.earth/alpine/v3.9" >> /etc/apk/repositories && \
-
-	apk add --no-cache \ 
-		php$PHP_VERSION \
-		php$PHP_VERSION-phar \
-		php$PHP_VERSION-bcmath \
-		php$PHP_VERSION-calendar \
-		php$PHP_VERSION-mbstring \
-		php$PHP_VERSION-exif \
-		php$PHP_VERSION-ftp \
-		php$PHP_VERSION-openssl \
-		php$PHP_VERSION-zip \
-		php$PHP_VERSION-sysvsem \
-		php$PHP_VERSION-sysvshm \
-		php$PHP_VERSION-sysvmsg \
-		php$PHP_VERSION-shmop \
-		php$PHP_VERSION-sockets \
-		php$PHP_VERSION-zlib \
-		php$PHP_VERSION-bz2 \
-		php$PHP_VERSION-curl \
-		php$PHP_VERSION-simplexml \
-		php$PHP_VERSION-xml \
-		php$PHP_VERSION-opcache \
-		php$PHP_VERSION-dom \
-		php$PHP_VERSION-xmlreader \
-		php$PHP_VERSION-xmlwriter \
-		php$PHP_VERSION-tokenizer \
-		php$PHP_VERSION-ctype \
-		php$PHP_VERSION-gd \
-		php$PHP_VERSION-gettext \
-		php$PHP_VERSION-imagick \
-		php$PHP_VERSION-intl \
-		php$PHP_VERSION-ldap \
-		php$PHP_VERSION-intl \
-		php$PHP_VERSION-memcached \
-		php$PHP_VERSION-mysqli \
-		php$PHP_VERSION-mysqlnd \
-		php$PHP_VERSION-pcntl \
-		php$PHP_VERSION-pdo \
-		php$PHP_VERSION-pdo_mysql \
-		php$PHP_VERSION-pdo_sqlite \
-		php$PHP_VERSION-redis \
-		php$PHP_VERSION-soap \
-		php$PHP_VERSION-sqlite3 \
-		php$PHP_VERSION-tidy \
-		php$PHP_VERSION-tokenizer \
-		php$PHP_VERSION-wddx \
-		php$PHP_VERSION-xsl \
-		php$PHP_VERSION-session \
-		php$PHP_VERSION-fileinfo \
-		php$PHP_VERSION-iconv \
-		php$PHP_VERSION-json \
-		php$PHP_VERSION-posix \
-		php$PHP_VERSION-xmlrpc \
-		php$PHP_VERSION-fpm \
-		php$PHP_VERSION-apcu && \
-
-		# Symlink current version
-		ln -snf /etc/php/$PHP_VERSION /etc/php/current; \
-	fi
-
-RUN if [ "$PHP_VERSION" == "7.4" ]; then \
-
-	# Codecasts PHP repow
-	wget https://dl.bintray.com/php-alpine/key/php-alpine.rsa.pub -O /etc/apk/keys/php-alpine.rsa.pub && \
-	
-	set -x \
-	&& echo "https://dl.bintray.com/php-alpine/v3.10/php-7.4" >> /etc/apk/repositories && \
-
-	apk add --no-cache \ 
-		php \
-		php-phar \
-		php-bcmath \
-		php-calendar \
-		php-mbstring \
-		php-exif \
-		php-ftp \
-		php-openssl \
-		php-zip \
-		php-sysvsem \
-		php-sysvshm \
-		php-sysvmsg \
-		php-shmop \
-		php-sockets \
-		php-zlib \
-		php-bz2 \
-		php-curl \
-		php-xml \
-		php-opcache \
-		php-dom \
-		php-xmlreader \
-		php-ctype \
-		php-gd \
-		php-gettext \
-		php-imagick \
-		php-intl \
-		php-ldap \
-		php-intl \
-		php-memcached \
-		php-mysqli \
-		php-mysqlnd \
-		php-pcntl \
-		php-pdo \
-		php-pdo_mysql \
-		php-pdo_sqlite \
-		php-redis \
-		php-soap \
-		php-sqlite3 \
-		php-tidy \
-		php-xsl \
-		php-session \
-		php-iconv \
-		php-json \
-		php-posix \
-		php-xmlrpc \
-		php-fpm \
-		php-apcu && \
+RUN apk add --no-cache \ 
+		php7 \
+		php7-phar \
+		php7-bcmath \
+		php7-calendar \
+		php7-mbstring \
+		php7-exif \
+		php7-ftp \
+		php7-openssl \
+		php7-zip \
+		php7-sysvsem \
+		php7-sysvshm \
+		php7-sysvmsg \
+		php7-shmop \
+		php7-sockets \
+		php7-zlib \
+		php7-bz2 \
+		php7-curl \
+		php7-xml \
+		php7-opcache \
+		php7-dom \
+		php7-xmlreader \
+		php7-ctype \
+		php7-gd \
+		php7-gettext \
+		php7-imagick \
+		php7-intl \
+		php7-ldap \
+		php7-intl \
+		php7-memcached \
+		php7-mysqli \
+		php7-mysqlnd \
+		php7-pcntl \
+		php7-pdo \
+		php7-pdo_mysql \
+		php7-pdo_sqlite \
+		php7-redis \
+		php7-soap \
+		php7-sqlite3 \
+		php7-tidy \
+		php7-xsl \
+		php7-session \
+		php7-iconv \
+		php7-json \
+		php7-posix \
+		php7-xmlrpc \
+		php7-fpm \
+		php7-apcu && \
 
 	ln -snf /usr/bin/php7 /usr/bin/php && \
 	ln -snf /usr/sbin/php-fpm7 /usr/sbin/php-fpm && \
 
 	# Symlink current version
 	mkdir /etc/php && \
-	ln -snf /etc/php7 /etc/php/current; \
-
-	fi
+	ln -snf /etc/php7 /etc/php/current;
 
 # Composer
 RUN EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)" && \
@@ -362,6 +154,15 @@ RUN EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)
     RESULT=$? && \
     rm composer-setup.php && \
     exit $RESULT
+
+RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
+    && architecture=$(case $(uname -m) in i386 | i686 | x86) echo "i386" ;; x86_64 | amd64) echo "amd64" ;; aarch64 | arm64 | armv8) echo "arm64" ;; *) echo "amd64" ;; esac) \
+    && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/alpine/$architecture/$version \
+    && mkdir -p /tmp/blackfire \
+    && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire \
+    && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so \
+    && rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
+
 
 RUN if [ "$ATATUS_ENABLED" == "TRUE" ]; then \
 	# Atatus

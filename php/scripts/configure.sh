@@ -18,6 +18,20 @@ printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "Environment:" "$ENVIRONMENT"
 # Version numbers:
 printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "PHP Version:" "`php -r 'echo phpversion();'`"
 
+# Blackfire - If on a supported PHP version (8), in QA, and the BLACKFIRE_ENDPOINT enironment variable is set; load blackfire.
+if [ $(php -r 'echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;') == "74" ] || [ $(php -r 'echo PHP_MAJOR_VERSION;') == "8" ]; then 
+    if [ "$ENVIRONMENT" == "qa" ] && [ ! -z "$BLACKFIRE_ENDPOINT" ] && [ "$BLACKFIRE_ENABLED" == "true" ]; then
+        printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "Blackfire:" "Enabled"
+        printf "# Parallax Blackfire\n" > /etc/php/current/conf.d/blackfire.ini
+        printf "extension=blackfire.so\n" >> /etc/php/current/conf.d/blackfire.ini
+        printf "blackfire.agent_socket=tcp://${BLACKFIRE_ENDPOINT}\n" >> /etc/php/current/conf.d/blackfire.ini
+    else
+        printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "Blackfire:" "Disabled"
+    fi
+else
+    printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "Blackfire:" "Disabled"
+fi
+
 # Atatus - if api key is set then configure and enable
 if [ ! -z "$ATATUS_APM_LICENSE_KEY" ] && [ "$ATATUS_APM_LICENSE_KEY" != "test" ]; then
 
