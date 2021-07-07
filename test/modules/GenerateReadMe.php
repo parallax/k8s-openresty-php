@@ -35,8 +35,6 @@ foreach ($allModules as $module => $value) {
 		foreach ($moduleList as $moduleExistsKey => $moduleExists) {
 			if ($moduleExists === $module) {
 				$allModules[$module][$phpVersion] = TRUE;
-			} else {
-				$allModules[$module][$phpVersion] = FALSE;
 			}
 		}
 	}
@@ -58,7 +56,7 @@ $output .= "\n";
 foreach ($allModules as $moduleName => $moduleVersions) {
 	$output .= '| ' . $moduleName . ' |';
 	foreach ($phpVersions as $key => $phpVersion) {
-		if ($moduleVersions[$phpVersion] === TRUE) {
+		if (isset($moduleVersions[$phpVersion])) {
 			$output .= ' ✓ |';
 		}
 		else {
