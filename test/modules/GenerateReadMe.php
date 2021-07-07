@@ -10,7 +10,7 @@ foreach ($phpVersions as $key => $phpVersion) {
 $modules = array();
 foreach ($phpVersions as $key => $phpVersion) {
 	
-	$modules[$phpVersion] = explode("\n", file_get_contents(__DIR__. '/moduleList/' . $phpVersion . '.list')); 
+	$modules[$phpVersion] = preg_split('/\r\n|\r|\n/', file_get_contents(__DIR__. '/moduleList/' . $phpVersion . '.list'));
 
 	// Filter some lines out
 	foreach ($modules[$phpVersion] as $lineKey => $line) {
@@ -35,6 +35,8 @@ foreach ($allModules as $module => $value) {
 		foreach ($moduleList as $moduleExistsKey => $moduleExists) {
 			if ($moduleExists === $module) {
 				$allModules[$module][$phpVersion] = TRUE;
+			} else {
+				$allModules[$module][$phpVersion] = FALSE;
 			}
 		}
 	}
