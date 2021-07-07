@@ -14,7 +14,7 @@ foreach ($phpVersions as $key => $phpVersion) {
 
 	// Filter some lines out
 	foreach ($modules[$phpVersion] as $lineKey => $line) {
-		if ($line === '[PHP Modules]' || $line === '' || $line === '[Zend Modules]' || strstr($line, '[')) {
+		if (strstr($line, '[')) {
 			unset($modules[$phpVersion][$lineKey]);
 		}
 	}
@@ -22,11 +22,16 @@ foreach ($phpVersions as $key => $phpVersion) {
 }
 
 $allModules = array();
-foreach ($modules[$phpVersion] as $key => $module) {
-	if (!isset($allModules[$module])) {
-		$allModules[$module] = array();
+foreach ($phpVersions as $key => $phpVersion) {
+	// Filter some lines out
+	foreach ($modules[$phpVersion] as $lineKey => $module) {
+		if (!isset($allModules[$module])) {
+			$allModules[$module] = array();
+		}
 	}
 }
+
+ksort($allModules, SORT_NATURAL | SORT_FLAG_CASE);
 
 // Now add modules for each version
 foreach ($allModules as $module => $value) {

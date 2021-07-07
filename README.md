@@ -213,14 +213,19 @@ To run in this mode, change the Docker CMD to be /start-worker.sh instead of the
 # PHP Modules
 | Module | 5.6 | 7.1 | 7.2 | 7.3 | 7.4 | 8.0 |
 | --- | --- | --- | --- | --- | --- | --- |
+|  | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| apc | ✓ | ✖ | ✖ | ✖ | ✖ | ✖ |
+| apcu | ✓ | ✓ | ✓ | ✓ | ✓ | ✖ |
 | atatus | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | bcmath | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| bz2 | ✖ | ✓ | ✓ | ✓ | ✓ | ✖ |
 | calendar | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | Core | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | ctype | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | curl | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | date | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | dom | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| ereg | ✓ | ✖ | ✖ | ✖ | ✖ | ✖ |
 | exif | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | fileinfo | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | filter | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
@@ -230,11 +235,15 @@ To run in this mode, change the Docker CMD to be /start-worker.sh instead of the
 | hash | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | iconv | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | igbinary | ✖ | ✖ | ✖ | ✖ | ✓ | ✓ |
+| imagick | ✓ | ✓ | ✓ | ✓ | ✓ | ✖ |
 | intl | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | ldap | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | libxml | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | mbstring | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| mcrypt | ✓ | ✖ | ✖ | ✖ | ✖ | ✖ |
+| memcached | ✖ | ✓ | ✓ | ✓ | ✓ | ✖ |
+| mysql | ✓ | ✖ | ✖ | ✖ | ✖ | ✖ |
 | mysqli | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | mysqlnd | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | openssl | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
@@ -244,19 +253,29 @@ To run in this mode, change the Docker CMD to be /start-worker.sh instead of the
 | pdo_mysql | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | pdo_sqlite | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | Phar | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| phpdbg_webhelper | ✖ | ✓ | ✓ | ✓ | ✖ | ✖ |
 | posix | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | readline | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | redis | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | Reflection | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | session | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| shmop | ✖ | ✓ | ✓ | ✓ | ✓ | ✖ |
 | SimpleXML | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | soap | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | sockets | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | SPL | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | sqlite3 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | standard | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| sysvmsg | ✖ | ✓ | ✓ | ✓ | ✓ | ✖ |
+| sysvsem | ✖ | ✓ | ✓ | ✓ | ✓ | ✖ |
+| sysvshm | ✖ | ✓ | ✓ | ✓ | ✓ | ✖ |
+| tidy | ✖ | ✓ | ✓ | ✓ | ✓ | ✖ |
 | tokenizer | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| wddx | ✓ | ✓ | ✓ | ✓ | ✖ | ✖ |
+| xml | ✓ | ✓ | ✓ | ✓ | ✓ | ✖ |
 | xmlreader | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| xmlrpc | ✓ | ✓ | ✓ | ✓ | ✓ | ✖ |
+| xmlwriter | ✓ | ✓ | ✓ | ✓ | ✓ | ✖ |
 | xsl | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | Zend OPcache | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | zip | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
