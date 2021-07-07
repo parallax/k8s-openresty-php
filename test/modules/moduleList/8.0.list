@@ -1,6 +1,8 @@
 [PHP Modules]
+apcu
 atatus
 bcmath
+bz2
 calendar
 Core
 ctype
@@ -16,6 +18,7 @@ gettext
 hash
 iconv
 igbinary
+imagick
 intl
 json
 ldap
@@ -35,14 +38,21 @@ readline
 redis
 Reflection
 session
+shmop
 SimpleXML
 soap
 sockets
 SPL
 sqlite3
 standard
+sysvmsg
+sysvsem
+sysvshm
+tidy
 tokenizer
+xml
 xmlreader
+xmlwriter
 xsl
 Zend OPcache
 zip

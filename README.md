@@ -215,10 +215,10 @@ To run in this mode, change the Docker CMD to be /start-worker.sh instead of the
 | --- | --- | --- | --- | --- | --- | --- |
 |  | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | apc | ✓ | ✖ | ✖ | ✖ | ✖ | ✖ |
-| apcu | ✓ | ✓ | ✓ | ✓ | ✓ | ✖ |
+| apcu | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | atatus | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | bcmath | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| bz2 | ✖ | ✓ | ✓ | ✓ | ✓ | ✖ |
+| bz2 | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | calendar | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | Core | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | ctype | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
@@ -235,7 +235,7 @@ To run in this mode, change the Docker CMD to be /start-worker.sh instead of the
 | hash | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | iconv | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | igbinary | ✖ | ✖ | ✖ | ✖ | ✓ | ✓ |
-| imagick | ✓ | ✓ | ✓ | ✓ | ✓ | ✖ |
+| imagick | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | intl | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | ldap | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
@@ -259,23 +259,23 @@ To run in this mode, change the Docker CMD to be /start-worker.sh instead of the
 | redis | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | Reflection | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | session | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| shmop | ✖ | ✓ | ✓ | ✓ | ✓ | ✖ |
+| shmop | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | SimpleXML | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | soap | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | sockets | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | SPL | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | sqlite3 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | standard | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| sysvmsg | ✖ | ✓ | ✓ | ✓ | ✓ | ✖ |
-| sysvsem | ✖ | ✓ | ✓ | ✓ | ✓ | ✖ |
-| sysvshm | ✖ | ✓ | ✓ | ✓ | ✓ | ✖ |
-| tidy | ✖ | ✓ | ✓ | ✓ | ✓ | ✖ |
+| sysvmsg | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| sysvsem | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| sysvshm | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| tidy | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | tokenizer | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | wddx | ✓ | ✓ | ✓ | ✓ | ✖ | ✖ |
-| xml | ✓ | ✓ | ✓ | ✓ | ✓ | ✖ |
+| xml | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | xmlreader | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | xmlrpc | ✓ | ✓ | ✓ | ✓ | ✓ | ✖ |
-| xmlwriter | ✓ | ✓ | ✓ | ✓ | ✓ | ✖ |
+| xmlwriter | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | xsl | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | Zend OPcache | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | zip | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |

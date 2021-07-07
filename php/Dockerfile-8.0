@@ -69,6 +69,8 @@ RUN apk add --no-cache \
     fcgi \
     nano \
     php8 \
+    php8-pecl-apcu \
+    php8-bz2 \
     php8-common \
     php8-curl \
     php8-dom \
@@ -77,6 +79,7 @@ RUN apk add --no-cache \
     php8-ftp \
     php8-gd \
     php8-iconv \
+    php8-pecl-imagick \
     php8-mbstring \
     php8-mysqli \
     php8-openssl \
@@ -93,12 +96,19 @@ RUN apk add --no-cache \
     php8-pcntl \
     php8-phar \
     php8-simplexml \
+    php8-shmop \
+    php8-sysvmsg \
+    php8-sysvsem \
+    php8-sysvshm \
     php8-sockets \
+    php8-tidy \
     php8-tokenizer \
     php8-xmlreader \
     php8-zip \
     php8-zlib \
     php8-xsl \
+    php8-xml \
+    php8-xmlwriter \
     php8-opcache \
     php8-ctype \
     php8-pdo_mysql \
