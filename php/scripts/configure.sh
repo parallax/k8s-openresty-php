@@ -188,6 +188,26 @@ if [ ! -z "$PHP_FPM_WORKERS" ]; then
 
 fi
 
+# PHP-FPM Worker User
+# If set
+if [ ! -z "$PHP_FPM_USER" ]; then
+    # Set PHP.ini accordingly
+    sed -i -e "s#user = nobody#user = $PHP_FPM_USER#g" /etc/php/current/php-fpm.d/www.conf
+
+    # Set PHP.ini accordingly
+    sed -i -e "s#listen.owner = nobody#listen.owner = $PHP_FPM_USER#g" /etc/php/current/php-fpm.d/www.conf
+fi
+
+# PHP-FPM Worker Group
+# If set
+if [ ! -z "$PHP_FPM_GROUP" ]; then
+    # Set PHP.ini accordingly
+    sed -i -e "s#group = nobody#group = $PHP_FPM_GROUP#g" /etc/php/current/php-fpm.d/www.conf
+
+    # Set PHP.ini accordingly
+    sed -i -e "s#listen.group = nobody#listen.group = $PHP_FPM_GROUP#g" /etc/php/current/php-fpm.d/www.conf
+fi
+
 printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "PHP-FPM Max Workers:" "`cat /etc/php/current/php-fpm.d/www.conf | grep 'pm.max_children = ' | sed -e 's/pm.max_children = //g'`"
 
 # Enable short tags for older sites
