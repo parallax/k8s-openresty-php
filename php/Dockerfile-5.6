@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.14
 
 ARG PHP_VERSION=5.6
 ARG ATATUS_VERSION=1.12.0
@@ -85,7 +85,12 @@ RUN apk add --no-cache \
     fcgi \
     nano
 
-RUN	apk add --no-cache \
+RUN	apk add --repository http://dl-cdn.alpinelinux.org/alpine/v3.8/main \
+    libressl-dev=2.7.5-r0 \
+    readline=7.0.003-r0 \
+    icu-libs=60.2-r3
+
+RUN	apk add --repository http://dl-cdn.alpinelinux.org/alpine/v3.8/community --update-cache \
   		php5 \
   		php5-common \
   		php5-curl \
@@ -100,7 +105,6 @@ RUN	apk add --no-cache \
   		php5-posix \
   		php5-soap \
   		php5-zip \
-  		php5-ldap \
   		php5-bcmath \
   		php5-calendar \
   		php5-gettext \
@@ -135,7 +139,7 @@ RUN	mkdir /etc/php && \
 	ln -snf /etc/php5 /etc/php/current
 
 # Imagick
-RUN apk add --no-cache autoconf php5-dev gcc make g++ zlib-dev wget imagemagick-dev && \
+RUN apk add --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/v3.8/community autoconf php5-dev gcc make g++ zlib-dev wget imagemagick-dev && \
     mkdir /imagick && cd /imagick && \
     wget http://pecl.php.net/get/imagick-3.4.4.tgz && \
     tar xzf imagick-3.4.4.tgz && cd imagick-3.4.4 && \
@@ -147,7 +151,7 @@ RUN apk add --no-cache autoconf php5-dev gcc make g++ zlib-dev wget imagemagick-
 RUN rm -rf /imagick
 	
 	# Imagick support file types
-RUN	apk add --no-cache imagemagick
+RUN	apk add --repository http://dl-cdn.alpinelinux.org/alpine/v3.8/main --no-cache imagemagick
 	
 	# Add php5-redis
 RUN	apk --no-cache add ca-certificates wget && \
