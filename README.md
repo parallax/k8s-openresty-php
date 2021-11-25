@@ -1,6 +1,6 @@
 # k8s-openresty-php
 
-> A set of relatively clean but full-featured, split solution to running openresty and php-fpm together but in seperate containers, supporting PHP versions 5.6, 7.1, 7.2, 7.3, 7.4 maintained by [Parallax](https://parall.ax/)
+> A set of relatively clean but full-featured, split solution to running openresty and php-fpm together but in seperate containers, supporting PHP versions 5.6, 7.1, 7.2, 7.3, 7.4, 8.0, and 8.1 maintained by [Parallax](https://parall.ax/)
 
 ## Docker Tags 
 |openresty      | Docker tag                                      |
@@ -15,6 +15,7 @@
 | 7.3           | prlx/k8s-openresty-php-php:release-php-7.3-latest   |
 | 7.4           | prlx/k8s-openresty-php-php:release-php-7.4-latest   |
 | 8.0           | prlx/k8s-openresty-php-php:release-php-8.0-latest   |
+| 8.1           | prlx/k8s-openresty-php-php:release-php-8.1-latest   |
 
 ## Browse all tags on Docker Hub
 [Openresty](https://hub.docker.com/r/prlx/k8s-openresty-php-openresty)
@@ -213,72 +214,72 @@ The worker will run php artisan queue:work --timeout=$WORKER_TIMEOUT --tries=$WO
 To run in this mode, change the Docker CMD to be /start-worker.sh instead of the default /start-web.sh.
 
 # PHP Modules
-| Module | 5.6 | 7.1 | 7.2 | 7.3 | 7.4 | 8.0 |
-| --- | --- | --- | --- | --- | --- | --- |
-|  | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| apc | ✓ | ✖ | ✖ | ✖ | ✖ | ✖ |
-| apcu | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| atatus | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| bcmath | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| bz2 | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| calendar | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Core | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| ctype | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| curl | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| date | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| dom | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| ereg | ✓ | ✖ | ✖ | ✖ | ✖ | ✖ |
-| exif | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| fileinfo | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| filter | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| ftp | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| gd | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| gettext | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| hash | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| iconv | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| igbinary | ✖ | ✖ | ✖ | ✖ | ✓ | ✓ |
-| imagick | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| intl | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| ldap | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| libxml | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| mbstring | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| mcrypt | ✓ | ✖ | ✖ | ✖ | ✖ | ✖ |
-| memcached | ✖ | ✓ | ✓ | ✓ | ✓ | ✖ |
-| mysql | ✓ | ✖ | ✖ | ✖ | ✖ | ✖ |
-| mysqli | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| mysqlnd | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| openssl | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| pcntl | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| pcre | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| PDO | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| pdo_mysql | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| pdo_sqlite | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Phar | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| phpdbg_webhelper | ✖ | ✓ | ✓ | ✓ | ✖ | ✖ |
-| posix | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| readline | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| redis | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Reflection | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| session | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| shmop | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| SimpleXML | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| soap | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| sockets | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| SPL | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| sqlite3 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| standard | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| sysvmsg | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| sysvsem | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| sysvshm | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| tidy | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| tokenizer | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| wddx | ✓ | ✓ | ✓ | ✓ | ✖ | ✖ |
-| xml | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| xmlreader | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| xmlrpc | ✓ | ✓ | ✓ | ✓ | ✓ | ✖ |
-| xmlwriter | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| xsl | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Zend OPcache | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| zip | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| zlib | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Module | 5.6 | 7.1 | 7.2 | 7.3 | 7.4 | 8.0 | 8.1 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+|  | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| apc | ✓ | ✖ | ✖ | ✖ | ✖ | ✖ | ✖ |
+| apcu | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| atatus | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✖ |
+| bcmath | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| bz2 | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| calendar | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Core | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| ctype | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| curl | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| date | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| dom | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| ereg | ✓ | ✖ | ✖ | ✖ | ✖ | ✖ | ✖ |
+| exif | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| fileinfo | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| filter | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| ftp | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| gd | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| gettext | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| hash | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| iconv | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| igbinary | ✖ | ✖ | ✖ | ✖ | ✓ | ✓ | ✓ |
+| imagick | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| intl | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| json | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| ldap | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| libxml | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| mbstring | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| mcrypt | ✓ | ✖ | ✖ | ✖ | ✖ | ✖ | ✖ |
+| memcached | ✖ | ✓ | ✓ | ✓ | ✓ | ✖ | ✖ |
+| mysql | ✓ | ✖ | ✖ | ✖ | ✖ | ✖ | ✖ |
+| mysqli | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| mysqlnd | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| openssl | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| pcntl | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| pcre | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| PDO | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| pdo_mysql | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| pdo_sqlite | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Phar | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| phpdbg_webhelper | ✖ | ✓ | ✓ | ✓ | ✖ | ✖ | ✖ |
+| posix | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| readline | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| redis | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Reflection | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| session | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| shmop | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| SimpleXML | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| soap | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| sockets | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| SPL | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| sqlite3 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| standard | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| sysvmsg | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| sysvsem | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| sysvshm | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| tidy | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ | ✖ |
+| tokenizer | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| wddx | ✓ | ✓ | ✓ | ✓ | ✖ | ✖ | ✖ |
+| xml | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| xmlreader | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| xmlrpc | ✓ | ✓ | ✓ | ✓ | ✓ | ✖ | ✖ |
+| xmlwriter | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| xsl | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Zend OPcache | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| zip | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| zlib | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
