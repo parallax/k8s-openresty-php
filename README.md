@@ -36,6 +36,7 @@ For help running these locally with docker run see the [docker run reference](ht
 | SITE_BRANCH                     | The running branch of your project, i.e. 'master'. Used by NR for app name.                                     | ✓        | ✓   | ✓      |
 | ENVIRONMENT                     | The environment you're running in, i.e. 'qa' or 'production'. Used by NR for app name.                          | ✓        | ✓   | ✓      |
 | ATATUS_APM_LICENSE_KEY          | Your Atatus license key. Atatus won't be used if this is not set.                                               | ✖        | ✓   | ✓      |
+| ATATUS_FRAMEWORK                | Manually set the Atatus framework (see Atatus docs, typically "Laravel" or "Symfony")                           | ✖        | ✓   | ✓      |
 | ATATUS_APM_RAW_SQL              | Set to any value (1, true, etc) to use raw sql logging into Atatus                                              | ✖        | ✓   | ✓      |
 | PHP_MEMORY_MAX                  | Maximum PHP request memory, in megabytes (i.e. '256'). Defaults to 128.                                         | ✖        | ✓   | ✓      |
 | MAX_EXECUTION_TIME              | Maximum PHP and Nginx execution/fastcgi read timeout	                                                          | ✖        | ✓   | ✓      |

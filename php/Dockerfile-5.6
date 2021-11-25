@@ -1,7 +1,7 @@
 FROM alpine:3.8
 
 ARG PHP_VERSION=5.6
-ARG ATATUS_VERSION=1.9.0
+ARG ATATUS_VERSION=1.12.0
 ARG ATATUS_ENABLED=TRUE
 
 ENV \
@@ -186,6 +186,11 @@ RUN if [ "$ATATUS_ENABLED" == "TRUE" ]; then \
 ADD /php/conf/php-fpm.conf /etc/php/current/php-fpm.conf
 ADD /php/conf/php.ini /etc/php/current/php.ini
 ADD /php/conf/php-www.conf /etc/php/current/php-fpm.d/www.conf
+
+# Root CA override
+ADD /php/conf/root.cer /etc/root-ca/root.cer
+RUN sed -i -e 's#;curl.cainfo =#curl.cainfo="/etc/root-ca/root.cer"#g' /etc/php5/php.ini
+RUN sed -i -e 's#;openssl.cafile=#openssl.cafile="/etc/root-ca/root.cer"#g' /etc/php5/php.ini
 
 # Clear out garbage
 RUN unset DEPS && rm -rf /run/php && rm -rf /run/php-fpm7.3

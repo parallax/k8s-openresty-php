@@ -63,6 +63,17 @@ if [ ! -z "$ATATUS_APM_LICENSE_KEY" ] && [ "$ATATUS_APM_LICENSE_KEY" != "test" ]
 	    sed -i -e "s/atatus.sql.capture = \"normalized\"/atatus.sql.capture = \"raw\"/g" /etc/php/current/conf.d/atatus.ini
 	
 	fi
+
+    # Atatus - configure framework in use manually if set
+    if [ ! -z "$ATATUS_FRAMEWORK" ]; then
+    
+        # Enabled
+        printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "Atatus Framework:" "$ATATUS_FRAMEWORK"
+    
+        # Set the atatus framework
+        sed -i -e "s/atatus.framework = \"\"/atatus.framework = \"$ATATUS_FRAMEWORK\"/g" /etc/php/current/conf.d/atatus.ini
+    
+    fi
 	
 	# Atatus - configure laravel queues if desirable
 	if [ -z "$ATATUS_APM_DISABLE_LARAVEL_QUEUES" ]; then
