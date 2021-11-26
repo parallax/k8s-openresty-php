@@ -273,7 +273,7 @@ To run in this mode, change the Docker CMD to be /start-worker.sh instead of the
 | sysvmsg | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | sysvsem | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | sysvshm | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| tidy | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ | ✖ |
+| tidy | ✖ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | tokenizer | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | wddx | ✓ | ✓ | ✓ | ✓ | ✖ | ✖ | ✖ |
 | xml | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |

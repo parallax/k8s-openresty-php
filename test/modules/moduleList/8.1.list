@@ -47,6 +47,7 @@ standard
 sysvmsg
 sysvsem
 sysvshm
+tidy
 tokenizer
 xml
 xmlreader
