@@ -55,9 +55,6 @@ ENV \
         curl \
         bash"
 
-RUN echo -n "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
-    apk update
-
 # Install deps
 RUN apk add --no-cache \
 	curl \
