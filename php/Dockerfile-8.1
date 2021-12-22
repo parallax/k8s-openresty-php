@@ -45,6 +45,7 @@ ENV \
         php81-intl \
         php81-fpm \
         php81-mysqli \
+        php81-sodium \
         curl \
         ca-certificates \
         supervisor \
@@ -120,7 +121,8 @@ RUN apk add --no-cache \
     php81-sqlite3 \
     php81-intl \
     php81-fpm \
-    php81-mysqli && \
+    php81-mysqli \
+    php81-sodium && \
 
 	ln -snf /usr/bin/php81 /usr/bin/php && \
 	ln -snf /usr/sbin/php-fpm81 /usr/sbin/php-fpm && \
