@@ -267,6 +267,7 @@ To run in this mode, change the Docker CMD to be /start-worker.sh instead of the
 | SimpleXML | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | soap | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | sockets | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| sodium | ✖ | ✖ | ✖ | ✖ | ✖ | ✖ | ✓ |
 | SPL | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | sqlite3 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
 | standard | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
