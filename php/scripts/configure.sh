@@ -155,8 +155,17 @@ if [ ! -z "$PHP_OPCACHE_MEMORY" ]; then
 
 fi
 
+# If set
+if [ ! -z "$PHP_OPCACHE_INTERNED_STRING_BUFFER" ]; then
+
+    # Set PHP.ini accordingly
+    sed -i -e "s#opcache.interned_strings_buffer=2#opcache.interned_strings_buffer=${PHP_OPCACHE_INTERNED_STRING_BUFFER}#g" /etc/php/current/php.ini
+
+fi
+
 # Print the real value
 printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "Opcache Memory Max:" "`php -r 'echo ini_get("opcache.memory_consumption");'`M"
+printf "\e[94m%-30s\e[0m \e[35m%-30s\e[0m\n" "Opcache Interned Strings Buffer:" "`php -r 'echo ini_get("opcache.interned_strings_buffer");'`M"
 
 # PHP Session Config
 # If set

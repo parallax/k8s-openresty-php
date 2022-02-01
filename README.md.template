@@ -30,26 +30,27 @@ Web/Worker just means whether these have any effect - nothing bad will happen if
 
 For help running these locally with docker run see the [docker run reference](https://docs.docker.com/engine/reference/run/#env-environment-variables)
 
-| Key                             | Description                                                                                                     | Required | Web | Worker |
-| ---                             | ---                                                                                                             | ---      | --- | ---    |
-| SITE_NAME                       | The name of your project, i.e. 'mywebsite'. Used by NR for app name.                                            | ✓        | ✓   | ✓      |
-| SITE_BRANCH                     | The running branch of your project, i.e. 'master'. Used by NR for app name.                                     | ✓        | ✓   | ✓      |
-| ENVIRONMENT                     | The environment you're running in, i.e. 'qa' or 'production'. Used by NR for app name.                          | ✓        | ✓   | ✓      |
-| ATATUS_APM_LICENSE_KEY          | Your Atatus license key. Atatus won't be used if this is not set.                                               | ✖        | ✓   | ✓      |
-| ATATUS_FRAMEWORK                | Manually set the Atatus framework (see Atatus docs, typically "Laravel" or "Symfony")                           | ✖        | ✓   | ✓      |
-| ATATUS_APM_RAW_SQL              | Set to any value (1, true, etc) to use raw sql logging into Atatus                                              | ✖        | ✓   | ✓      |
-| PHP_MEMORY_MAX                  | Maximum PHP request memory, in megabytes (i.e. '256'). Defaults to 128.                                         | ✖        | ✓   | ✓      |
-| MAX_EXECUTION_TIME              | Maximum PHP and Nginx execution/fastcgi read timeout	                                                          | ✖        | ✓   | ✓      |
-| PHP_FPM_WORKERS                 | Maximum PHP-FPM workers. Defaults to 4 if not set.                                                              | ✖        | ✓   | ✖      |
-| PHP_FPM_USER                    | User which PHP-FPM workers are started as. Defaults to nobody.                                                  | ✖        | ✓   | ✖      |
-| PHP_FPM_GROUP                   | Group which PHP-FPM workers are started as. Defaults to nobody.                                                 | ✖        | ✓   | ✖      |
-| DISABLE_OPCACHE                 | Set to any value (1, true, etc) to disable PHP Opcache                                                          | ✖        | ✓   | ✓      |
-| PHP_OPCACHE_MEMORY              | Maximum PHP request memory, in megabytes (i.e. '64'). Defaults to 16.                                           | ✖        | ✓   | ✓      |
-| PHP_SESSION_STORE               | If not set, PHP uses /tmp for sessions. If set to 'redis', uses redis for sessions                              | ✖        | ✓   | ✓      |
-| PHP_SESSION_STORE_REDIS_HOST    | If not set, defaults to 'redis'. Only used if PHP_SESSION_STORE is set to redis                                 | ✖        | ✓   | ✓      |
-| PHP_SESSION_STORE_REDIS_PORT    | If not set, defaults to 6379. Only used if PHP_SESSION_STORE is set to redis                                    | ✖        | ✓   | ✓      |
-| PHP_DISABLE_CACHE_HEADERS       | Set to any value (1, true, etc) to disable PHP's default pragma: no-cache headers                               | ✖        | ✓   | ✖      |
-| PHP_ENABLE_SHORT_TAGS           | Set to any value (1, true, etc) to enable PHP short tagging                                                     | ✖        | ✓   | ✓      |
+| Key                                | Description                                                                                                     | Required | Web | Worker |
+| ---                                | ---                                                                                                             | ---      | --- | ---    |
+| SITE_NAME                          | The name of your project, i.e. 'mywebsite'. Used by NR for app name.                                            | ✓        | ✓   | ✓      |
+| SITE_BRANCH                        | The running branch of your project, i.e. 'master'. Used by NR for app name.                                     | ✓        | ✓   | ✓      |
+| ENVIRONMENT                        | The environment you're running in, i.e. 'qa' or 'production'. Used by NR for app name.                          | ✓        | ✓   | ✓      |
+| ATATUS_APM_LICENSE_KEY             | Your Atatus license key. Atatus won't be used if this is not set.                                               | ✖        | ✓   | ✓      |
+| ATATUS_FRAMEWORK                   | Manually set the Atatus framework (see Atatus docs, typically "Laravel" or "Symfony")                           | ✖        | ✓   | ✓      |
+| ATATUS_APM_RAW_SQL                 | Set to any value (1, true, etc) to use raw sql logging into Atatus                                              | ✖        | ✓   | ✓      |
+| PHP_MEMORY_MAX                     | Maximum PHP request memory, in megabytes (i.e. '256'). Defaults to 128.                                         | ✖        | ✓   | ✓      |
+| MAX_EXECUTION_TIME                 | Maximum PHP and Nginx execution/fastcgi read timeout	                                                           | ✖        | ✓   | ✓      |
+| PHP_FPM_WORKERS                    | Maximum PHP-FPM workers. Defaults to 4 if not set.                                                              | ✖        | ✓   | ✖      |
+| PHP_FPM_USER                       | User which PHP-FPM workers are started as. Defaults to nobody.                                                  | ✖        | ✓   | ✖      |
+| PHP_FPM_GROUP                      | Group which PHP-FPM workers are started as. Defaults to nobody.                                                 | ✖        | ✓   | ✖      |
+| DISABLE_OPCACHE                    | Set to any value (1, true, etc) to disable PHP Opcache                                                          | ✖        | ✓   | ✓      |
+| PHP_OPCACHE_MEMORY                 | Maximum PHP request memory, in megabytes (i.e. '64'). Defaults to 16.                                           | ✖        | ✓   | ✓      |
+| PHP_OPCACHE_INTERNED_STRING_BUFFER | Maximum PHP interned string buffer memory, in megabytes (i.e. '16'). Defaults to 2.                             | ✖        | ✓   | ✓      |
+| PHP_SESSION_STORE                  | If not set, PHP uses /tmp for sessions. If set to 'redis', uses redis for sessions                              | ✖        | ✓   | ✓      |
+| PHP_SESSION_STORE_REDIS_HOST       | If not set, defaults to 'redis'. Only used if PHP_SESSION_STORE is set to redis                                 | ✖        | ✓   | ✓      |
+| PHP_SESSION_STORE_REDIS_PORT       | If not set, defaults to 6379. Only used if PHP_SESSION_STORE is set to redis                                    | ✖        | ✓   | ✓      |
+| PHP_DISABLE_CACHE_HEADERS          | Set to any value (1, true, etc) to disable PHP's default pragma: no-cache headers                               | ✖        | ✓   | ✖      |
+| PHP_ENABLE_SHORT_TAGS              | Set to any value (1, true, etc) to enable PHP short tagging                                                     | ✖        | ✓   | ✓      |
 
 # The web mode/command
 
