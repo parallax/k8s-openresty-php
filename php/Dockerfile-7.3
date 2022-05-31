@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:3.12
 
 ARG ATATUS_VERSION=1.14.0
 ARG ATATUS_ENABLED=TRUE
@@ -7,43 +7,58 @@ ENV \
     # When using Composer, disable the warning about running commands as root/super user
     COMPOSER_ALLOW_SUPERUSER=1 \
     # Persistent runtime dependencies
-    DEPS="php8 \
-        php8-common \
-        php8-curl \
-        php8-dom \
-        php8-exif \
-        php8-fileinfo \
-        php8-ftp \
-        php8-gd \
-        php8-iconv \
-        php8-mysqli \
-        php8-openssl \
-        php8-pdo \
-        php8-posix \
-        php8-soap \
-        php8-zip \
-        php8-ldap \
-        php8-bcmath \
-        php8-calendar \
-        php8-gettext \
-        php8-mbstring \
-        php8-pcntl \
-        php8-phar \
-        php8-simplexml \
-        php8-sockets \
-        php8-tokenizer \
-        php8-xmlreader \
-        php8-zip \
-        php8-zlib \
-        php8-xsl \
-        php8-opcache \
-        php8-ctype \
-        php8-pdo_mysql \
-        php8-pdo_sqlite \
-        php8-sqlite3 \
-        php8-intl \
-        php8-fpm \
-        php8-mysqli \
+    DEPS="php7 \
+        php7-phar \
+        php7-bcmath \
+        php7-calendar \
+        php7-mbstring \
+        php7-exif \
+        php7-ftp \
+        php7-openssl \
+        php7-zip \
+        php7-sysvsem \
+        php7-sysvshm \
+        php7-sysvmsg \
+        php7-shmop \
+        php7-sockets \
+        php7-zlib \
+        php7-bz2 \
+        php7-curl \
+        php7-simplexml \
+        php7-xml \
+        php7-opcache \
+        php7-dom \
+        php7-xmlreader \
+        php7-xmlwriter \
+        php7-ctype \
+        php7-gd \
+        php7-gettext \
+        php7-imagick \
+        php7-intl \
+        php7-ldap \
+        php7-intl \
+        php7-memcached \
+        php7-mysqli \
+        php7-mysqlnd \
+        php7-pcntl \
+        php7-pdo \
+        php7-pdo_mysql \
+        php7-pdo_sqlite \
+        php7-redis \
+        php7-soap \
+        php7-sqlite3 \
+        php7-tidy \
+        php7-tokenizer \
+        php7-wddx \
+        php7-xsl \
+        php7-session \
+        php7-fileinfo \
+        php7-iconv \
+        php7-json \
+        php7-posix \
+        php7-xmlrpc \
+        php7-fpm \
+        php7-apcu \
         curl \
         ca-certificates \
         supervisor \
@@ -66,63 +81,69 @@ RUN apk add --no-cache \
     curl \
     bash \
     fcgi \
-    nano \
-    php8 \
-    php8-pecl-apcu \
-    php8-bz2 \
-    php8-common \
-    php8-curl \
-    php8-dom \
-    php8-exif \
-    php8-fileinfo \
-    php8-ftp \
-    php8-gd \
-    php8-iconv \
-    php8-pecl-imagick \
-    php8-mbstring \
-    php8-mysqli \
-    php8-openssl \
-    php8-pdo \
-    php8-posix \
-    php8-soap \
-    php8-session \
-    php8-redis \
-    php8-zip \
-    php8-ldap \
-    php8-bcmath \
-    php8-calendar \
-    php8-gettext \
-    php8-pcntl \
-    php8-phar \
-    php8-simplexml \
-    php8-shmop \
-    php8-sysvmsg \
-    php8-sysvsem \
-    php8-sysvshm \
-    php8-sockets \
-    php8-tidy \
-    php8-tokenizer \
-    php8-xmlreader \
-    php8-zip \
-    php8-zlib \
-    php8-xsl \
-    php8-xml \
-    php8-xmlwriter \
-    php8-opcache \
-    php8-ctype \
-    php8-pdo_mysql \
-    php8-pdo_sqlite \
-    php8-sqlite3 \
-    php8-intl \
-    php8-fpm \
-    php8-mysqli && \
+    nano
 
-    ln -snf /usr/bin/php8 /usr/bin/php && \
-    ln -snf /usr/sbin/php-fpm8 /usr/sbin/php-fpm && \
+RUN apk add --no-cache \ 
+        php7 \
+        php7-phar \
+        php7-bcmath \
+        php7-calendar \
+        php7-mbstring \
+        php7-exif \
+        php7-fileinfo \
+        php7-tokenizer \
+        php7-simplexml \
+        php7-xml \
+        php7-xmlreader \
+        php7-xmlwriter \
+        php7-ftp \
+        php7-openssl \
+        php7-zip \
+        php7-sysvsem \
+        php7-sysvshm \
+        php7-sysvmsg \
+        php7-shmop \
+        php7-sockets \
+        php7-zlib \
+        php7-bz2 \
+        php7-curl \
+        php7-xml \
+        php7-opcache \
+        php7-dom \
+        php7-xmlreader \
+        php7-ctype \
+        php7-gd \
+        php7-gettext \
+        php7-imagick \
+        php7-intl \
+        php7-ldap \
+        php7-intl \
+        php7-memcached \
+        php7-mysqli \
+        php7-mysqlnd \
+        php7-pcntl \
+        php7-pdo \
+        php7-pdo_mysql \
+        php7-pdo_sqlite \
+        php7-redis \
+        php7-soap \
+        php7-sqlite3 \
+        php7-tidy \
+        php7-xsl \
+        php7-session \
+        php7-iconv \
+        php7-json \
+        php7-posix \
+        php7-xmlrpc \
+        php7-fpm \
+        php7-apcu && \
+
+    ln -snf /usr/bin/php7 /usr/bin/php && \
+    ln -snf /usr/sbin/php-fpm7 /usr/sbin/php-fpm && \
 
     # Symlink current version
     mkdir /etc/php && \
-    ln -snf /etc/php8 /etc/php/current;
+    ln -snf /etc/php7 /etc/php/current;
 
 # Composer
 RUN EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)" && \
@@ -134,7 +155,7 @@ RUN EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)
         rm composer-setup.php \
     exit 1; \
     fi && \
-    php composer-setup.php --quiet --install-dir=/usr/local/bin --filename=composer && \
+    php composer-setup.php --quiet --install-dir=/usr/local/bin --filename=composer --version=1.10.17 && \
     RESULT=$? && \
     rm composer-setup.php && \
     exit $RESULT
@@ -146,6 +167,7 @@ RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
     && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire \
     && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so \
     && rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
+
 
 RUN if [ "$ATATUS_ENABLED" == "TRUE" ]; then \
     # Atatus
