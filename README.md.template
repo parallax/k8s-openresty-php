@@ -1,6 +1,6 @@
 # k8s-openresty-php
 
-> A set of relatively clean but full-featured, split solution to running openresty and php-fpm together but in seperate containers, supporting PHP versions 5.6, 7.1, 7.2, 7.3, 7.4, 8.0, and 8.1 maintained by [Parallax](https://parall.ax/)
+> A set of relatively clean but full-featured, split solution to running openresty and php-fpm together but in seperate containers, supporting PHP versions 5.6, 7.1, 7.2, 7.3, 7.4, 8.0, 8.1 and 8.2 maintained by [Parallax](https://parall.ax/)
 
 ## Docker Tags 
 |openresty      | Docker tag                                      |
@@ -16,6 +16,7 @@
 | 7.4           | prlx/k8s-openresty-php-php:release-php-7.4-latest   |
 | 8.0           | prlx/k8s-openresty-php-php:release-php-8.0-latest   |
 | 8.1           | prlx/k8s-openresty-php-php:release-php-8.1-latest   |
+| 8.2           | prlx/k8s-openresty-php-php:release-php-8.2-latest   |
 
 ## Browse all tags on Docker Hub
 [Openresty](https://hub.docker.com/r/prlx/k8s-openresty-php-openresty)

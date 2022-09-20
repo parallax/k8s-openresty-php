@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: 'openresty-8.2'
+  namespace: default
+spec:
+  ports:
+  - name: openresty
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: 'k8s-openresty-php-8.2'
+  sessionAffinity: None
+  type: NodePort
