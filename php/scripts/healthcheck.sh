@@ -39,7 +39,7 @@
 # --slow-requests=n
 #
 
-set -eu
+set -euo pipefail
 
 OPTIND=1 # Reset getopt in case it has been used previously in the shell
 
