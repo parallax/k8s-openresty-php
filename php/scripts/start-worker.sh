@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 source /configure.sh
 
 cp -R /src/. /src-shared/
