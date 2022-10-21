@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM alpine:3.9
 
 ARG ATATUS_VERSION=1.12.0
 ARG ATATUS_ENABLED=TRUE
@@ -30,6 +30,7 @@ ENV \
         php7-dom \
         php7-xmlreader \
         php7-xmlwriter \
+        php7-tokenizer \
         php7-ctype \
         php7-gd \
         php7-gettext \
@@ -90,12 +91,6 @@ RUN apk add --no-cache \
 		php7-calendar \
 		php7-mbstring \
 		php7-exif \
-        php7-fileinfo \
-        php7-tokenizer \
-        php7-simplexml \
-        php7-xml \
-        php7-xmlreader \
-        php7-xmlwriter \
 		php7-ftp \
 		php7-openssl \
 		php7-zip \
@@ -107,10 +102,13 @@ RUN apk add --no-cache \
 		php7-zlib \
 		php7-bz2 \
 		php7-curl \
+		php7-simplexml \
 		php7-xml \
 		php7-opcache \
 		php7-dom \
 		php7-xmlreader \
+		php7-xmlwriter \
+		php7-tokenizer \
 		php7-ctype \
 		php7-gd \
 		php7-gettext \
@@ -129,8 +127,11 @@ RUN apk add --no-cache \
 		php7-soap \
 		php7-sqlite3 \
 		php7-tidy \
+		php7-tokenizer \
+		php7-wddx \
 		php7-xsl \
 		php7-session \
+		php7-fileinfo \
 		php7-iconv \
 		php7-json \
 		php7-posix \
@@ -138,12 +139,10 @@ RUN apk add --no-cache \
 		php7-fpm \
 		php7-apcu && \
 
-	ln -snf /usr/bin/php7 /usr/bin/php && \
-	ln -snf /usr/sbin/php-fpm7 /usr/sbin/php-fpm && \
+		# Symlink current version
+    mkdir /etc/php && \
+		ln -snf /etc/php7 /etc/php/current;
 
-	# Symlink current version
-	mkdir /etc/php && \
-	ln -snf /etc/php7 /etc/php/current;
 
 # Composer
 RUN EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)" && \
@@ -159,15 +158,6 @@ RUN EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)
     RESULT=$? && \
     rm composer-setup.php && \
     exit $RESULT
-
-RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
-    && architecture=$(case $(uname -m) in i386 | i686 | x86) echo "i386" ;; x86_64 | amd64) echo "amd64" ;; aarch64 | arm64 | armv8) echo "arm64" ;; *) echo "amd64" ;; esac) \
-    && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/alpine/$architecture/$version \
-    && mkdir -p /tmp/blackfire \
-    && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire \
-    && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so \
-    && rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
-
 
 RUN if [ "$ATATUS_ENABLED" == "TRUE" ]; then \
 	# Atatus
