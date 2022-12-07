@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eo pipefail
 source /configure.sh
 
 cp -R /src/. /src-shared/

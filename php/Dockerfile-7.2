@@ -1,0 +1,200 @@
+FROM alpine:3.9
+
+ARG ATATUS_VERSION=1.12.0
+ARG ATATUS_ENABLED=TRUE
+
+ENV \
+    # When using Composer, disable the warning about running commands as root/super user
+    COMPOSER_ALLOW_SUPERUSER=1 \
+    # Persistent runtime dependencies
+    DEPS="php7 \
+        php7-phar \
+        php7-bcmath \
+        php7-calendar \
+        php7-mbstring \
+        php7-exif \
+        php7-ftp \
+        php7-openssl \
+        php7-zip \
+        php7-sysvsem \
+        php7-sysvshm \
+        php7-sysvmsg \
+        php7-shmop \
+        php7-sockets \
+        php7-zlib \
+        php7-bz2 \
+        php7-curl \
+        php7-simplexml \
+        php7-xml \
+        php7-opcache \
+        php7-dom \
+        php7-xmlreader \
+        php7-xmlwriter \
+        php7-tokenizer \
+        php7-ctype \
+        php7-gd \
+        php7-gettext \
+        php7-imagick \
+        php7-intl \
+        php7-ldap \
+        php7-intl \
+        php7-memcached \
+        php7-mysqli \
+        php7-mysqlnd \
+        php7-pcntl \
+        php7-pdo \
+        php7-pdo_mysql \
+        php7-pdo_sqlite \
+        php7-redis \
+        php7-soap \
+        php7-sqlite3 \
+        php7-tidy \
+        php7-tokenizer \
+        php7-wddx \
+        php7-xsl \
+        php7-session \
+        php7-fileinfo \
+        php7-iconv \
+        php7-json \
+        php7-posix \
+        php7-xmlrpc \
+        php7-fpm \
+        php7-apcu \
+        curl \
+        ca-certificates \
+        supervisor \
+        bash \
+        tzdata \
+        openssl \
+        wget \
+        curl \
+        bash"
+
+# Install deps
+RUN apk add --no-cache \
+	curl \
+    ca-certificates \
+    supervisor \
+    bash \
+    tzdata \
+    openssl \
+    wget \
+    curl \
+    bash \
+    fcgi \
+    nano
+
+RUN apk add --no-cache \
+		php7 \
+		php7-phar \
+		php7-bcmath \
+		php7-calendar \
+		php7-mbstring \
+		php7-exif \
+		php7-ftp \
+		php7-openssl \
+		php7-zip \
+		php7-sysvsem \
+		php7-sysvshm \
+		php7-sysvmsg \
+		php7-shmop \
+		php7-sockets \
+		php7-zlib \
+		php7-bz2 \
+		php7-curl \
+		php7-simplexml \
+		php7-xml \
+		php7-opcache \
+		php7-dom \
+		php7-xmlreader \
+		php7-xmlwriter \
+		php7-tokenizer \
+		php7-ctype \
+		php7-gd \
+		php7-gettext \
+		php7-imagick \
+		php7-intl \
+		php7-ldap \
+		php7-intl \
+		php7-memcached \
+		php7-mysqli \
+		php7-mysqlnd \
+		php7-pcntl \
+		php7-pdo \
+		php7-pdo_mysql \
+		php7-pdo_sqlite \
+		php7-redis \
+		php7-soap \
+		php7-sqlite3 \
+		php7-tidy \
+		php7-tokenizer \
+		php7-wddx \
+		php7-xsl \
+		php7-session \
+		php7-fileinfo \
+		php7-iconv \
+		php7-json \
+		php7-posix \
+		php7-xmlrpc \
+		php7-fpm \
+		php7-apcu && \
+
+		# Symlink current version
+    mkdir /etc/php && \
+		ln -snf /etc/php7 /etc/php/current;
+
+
+# Composer
+RUN EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)" && \
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    ACTUAL_SIGNATURE="$(php -r "echo hash_file('sha384', 'composer-setup.php');")" && \
+    if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]; \
+    then \
+        >&2 echo 'ERROR: Invalid installer signature' \
+        rm composer-setup.php \
+    exit 1; \
+    fi && \
+    php composer-setup.php --quiet --install-dir=/usr/local/bin --filename=composer --version=1.10.17 && \
+    RESULT=$? && \
+    rm composer-setup.php && \
+    exit $RESULT
+
+RUN if [ "$ATATUS_ENABLED" == "TRUE" ]; then \
+	# Atatus
+	wget https://s3.amazonaws.com/atatus-artifacts/atatus-php/downloads/atatus-php-$ATATUS_VERSION-x64-musl.tar.gz && tar -xzvf atatus-php-$ATATUS_VERSION-x64-musl.tar.gz && cd atatus-php-$ATATUS_VERSION-x64-musl && ./install.sh && rm -f /atatus-php-$ATATUS_VERSION-x64-musl.tar.gz && rm -rf /atatus-php-$ATATUS_VERSION-x64-musl && \
+	sed -i -e 's#atatus.trace.response_time = 2000#atatus.trace.response_time = 1500#g' /etc/php/current/conf.d/atatus.ini && \
+	  sed -i -e 's#atatus.collector.pidfile = "/var/run/atatus-php-collector.pid"#atatus.collector.pidfile = "/run/atatus-php-collector.pid"#g' /etc/php/current/conf.d/atatus.ini && \
+	  sed -i -e 's#atatus.collector.connection = "/tmp/.atatus.sock"#atatus.collector.connection = "/run/atatus.sock"#g' /etc/php/current/conf.d/atatus.ini && \
+	# Write log files to stdout
+	rm -f /var/log/atatus/agent.log && rm -f /var/log/atatus/collector.log && rm -f /var/log/atatus/debug.txt && ln -sf /dev/null /var/log/atatus/agent.log && ln -sf /dev/null /var/log/atatus/collector.log && ln -sf /dev/null /var/log/atatus/debug.txt; \
+	fi
+
+# PHP Config
+ADD /php/conf/php-fpm.conf /etc/php/current/php-fpm.conf
+ADD /php/conf/php.ini /etc/php/current/php.ini
+ADD /php/conf/php-www.conf /etc/php/current/php-fpm.d/www.conf
+
+# Clear out garbage
+RUN unset DEPS && rm -rf /run/php && rm -rf /run/php-fpm7.3
+
+# Start script
+ADD /php/scripts/start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Start cron script
+ADD /php/scripts/start-cron.sh /start-cron.sh
+RUN chmod +x /start-cron.sh
+
+# Start worker script
+ADD /php/scripts/start-worker.sh /start-worker.sh
+RUN chmod +x /start-worker.sh
+
+# Configure script
+ADD /php/scripts/configure.sh /configure.sh
+RUN chmod +x /configure.sh
+
+# Healthcheck script
+ADD /php/scripts/healthcheck.sh /healthcheck.sh
+RUN chmod +x /healthcheck.sh
+
+CMD ["/start.sh"]
