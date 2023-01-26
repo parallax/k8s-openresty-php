@@ -5,7 +5,7 @@ ARG ATATUS_ENABLED=FALSE
 
 ENV \
     # Disable atatus at runtime
-    ATATUS_ENABLED=FALSE
+    ATATUS_ENABLED=FALSE \
     # When using Composer, disable the warning about running commands as root/super user
     COMPOSER_ALLOW_SUPERUSER=1 \
     # Persistent runtime dependencies
