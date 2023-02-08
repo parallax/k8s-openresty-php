@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eo pipefail
+set -e
 # If stuff hasn't been set
 if [ -z "$SITE_NAME" ]; then
 	export SITE_NAME=site_name
