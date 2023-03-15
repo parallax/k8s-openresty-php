@@ -1,11 +1,9 @@
 FROM alpine:3.17
 
-ARG ATATUS_VERSION=1.14.0
-ARG ATATUS_ENABLED=FALSE
+ARG ATATUS_VERSION=1.15.0
+ARG ATATUS_ENABLED=TRUE
 
 ENV \
-    # Disable atatus at runtime
-    ATATUS_ENABLED=FALSE \
     # When using Composer, disable the warning about running commands as root/super user
     COMPOSER_ALLOW_SUPERUSER=1 \
     # Persistent runtime dependencies
@@ -156,16 +154,16 @@ RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
     && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so \
     && rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
 
-#RUN if [ "$ATATUS_ENABLED" == "TRUE" ]; then \
-#    # Atatus
-#    architecture=$(case $(uname -m) in i386 | i686 | x86) echo "i386" ;; x86_64 | amd64) echo "x64" ;; aarch64 | arm64 | armv8) echo "arm64" ;; *) echo "x64" ;; esac) && \
-#    wget https://s3.amazonaws.com/atatus-artifacts/atatus-php/downloads/atatus-php-$ATATUS_VERSION-$architecture-musl.tar.gz && tar -xzvf atatus-php-$ATATUS_VERSION-$architecture-musl.tar.gz && cd atatus-php-$ATATUS_VERSION-$architecture-musl && ./install.sh && rm -f /atatus-php-$ATATUS_VERSION-$architecture-musl.tar.gz && rm -rf /atatus-php-$ATATUS_VERSION-$architecture-musl && \
-#    sed -i -e 's#atatus.trace.response_time = 2000#atatus.trace.response_time = 1500#g' /etc/php/current/conf.d/atatus.ini && \
-#    sed -i -e 's#atatus.collector.pidfile = "/var/run/atatus-php-collector.pid"#atatus.collector.pidfile = "/run/atatus-php-collector.pid"#g' /etc/php/current/conf.d/atatus.ini && \
-#    sed -i -e 's#atatus.collector.connection = "/tmp/.atatus.sock"#atatus.collector.connection = "/run/atatus.sock"#g' /etc/php/current/conf.d/atatus.ini && \
-#    # Write log files to stdout
-#    rm -f /var/log/atatus/agent.log && rm -f /var/log/atatus/collector.log && rm -f /var/log/atatus/debug.txt && ln -sf /dev/null /var/log/atatus/agent.log && ln -sf /dev/null /var/log/atatus/collector.log && ln -sf /dev/null /var/log/atatus/debug.txt; \
-#    fi
+RUN if [ "$ATATUS_ENABLED" == "TRUE" ]; then \
+    # Atatus
+    architecture=$(case $(uname -m) in i386 | i686 | x86) echo "i386" ;; x86_64 | amd64) echo "x64" ;; aarch64 | arm64 | armv8) echo "arm64" ;; *) echo "x64" ;; esac) && \
+    wget https://s3.amazonaws.com/atatus-artifacts/atatus-php/downloads/atatus-php-$ATATUS_VERSION-$architecture-musl.tar.gz && tar -xzvf atatus-php-$ATATUS_VERSION-$architecture-musl.tar.gz && cd atatus-php-$ATATUS_VERSION-$architecture-musl && ./install.sh && rm -f /atatus-php-$ATATUS_VERSION-$architecture-musl.tar.gz && rm -rf /atatus-php-$ATATUS_VERSION-$architecture-musl && \
+    sed -i -e 's#atatus.trace.response_time = 2000#atatus.trace.response_time = 1500#g' /etc/php/current/conf.d/atatus.ini && \
+    sed -i -e 's#atatus.collector.pidfile = "/var/run/atatus-php-collector.pid"#atatus.collector.pidfile = "/run/atatus-php-collector.pid"#g' /etc/php/current/conf.d/atatus.ini && \
+    sed -i -e 's#atatus.collector.connection = "/tmp/.atatus.sock"#atatus.collector.connection = "/run/atatus.sock"#g' /etc/php/current/conf.d/atatus.ini && \
+    # Write log files to stdout
+    rm -f /var/log/atatus/agent.log && rm -f /var/log/atatus/collector.log && rm -f /var/log/atatus/debug.txt && ln -sf /dev/null /var/log/atatus/agent.log && ln -sf /dev/null /var/log/atatus/collector.log && ln -sf /dev/null /var/log/atatus/debug.txt; \
+    fi
 
 # PHP Config
 ADD /php/conf/php-fpm.conf /etc/php/current/php-fpm.conf
