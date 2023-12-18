@@ -1,0 +1,196 @@
+FROM alpine:3.19
+
+ARG ATATUS_VERSION=1.15.0
+ARG ATATUS_ENABLED=FALSE
+
+ENV \
+    # When using Composer, disable the warning about running commands as root/super user
+    COMPOSER_ALLOW_SUPERUSER=1 \
+    # Persistent runtime dependencies
+    DEPS="php83 \
+        php83-common \
+        php83-curl \
+        php83-dom \
+        php83-exif \
+        php83-fileinfo \
+        php83-ftp \
+        php83-gd \
+        php83-iconv \
+        php83-mysqli \
+        php83-openssl \
+        php83-pdo \
+        php83-posix \
+        php83-soap \
+        php83-zip \
+        php83-ldap \
+        php83-bcmath \
+        php83-calendar \
+        php83-gettext \
+        php83-mbstring \
+        php83-pcntl \
+        php83-phar \
+        php83-simplexml \
+        php83-sockets \
+        php83-tokenizer \
+        php83-xmlreader \
+        php83-zip \
+        php83-zlib \
+        php83-xsl \
+        php83-opcache \
+        php83-ctype \
+        php83-pdo_mysql \
+        php83-pdo_sqlite \
+        php83-sqlite3 \
+        php83-intl \
+        php83-fpm \
+        php83-mysqli \
+        php83-sodium \
+        curl \
+        ca-certificates \
+        supervisor \
+        bash \
+        tzdata \
+        openssl \
+        wget \
+        curl \
+        bash"
+
+RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories
+RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories
+RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/main' >> /etc/apk/repositories
+
+# Install deps
+RUN apk add --no-cache \
+    curl \
+    ca-certificates \
+    supervisor \
+    bash \
+    tzdata \
+    openssl \
+    wget \
+    curl \
+    bash \
+    fcgi \
+    nano \
+    tidyhtml \
+    php83 \
+    php83-pecl-apcu \
+    php83-bz2 \
+    php83-common \
+    php83-curl \
+    php83-dom \
+    php83-exif \
+    php83-fileinfo \
+    php83-ftp \
+    php83-gd \
+    php83-iconv \
+    php83-pecl-imagick \
+    php83-mbstring \
+    php83-mysqli \
+    php83-openssl \
+    php83-pdo \
+    php83-posix \
+    php83-soap \
+    php83-session \
+    php83-pecl-redis \
+    php83-zip \
+    php83-ldap \
+    php83-bcmath \
+    php83-calendar \
+    php83-gettext \
+    php83-pcntl \
+    php83-phar \
+    php83-simplexml \
+    php83-shmop \
+    php83-sysvmsg \
+    php83-sysvsem \
+    php83-sysvshm \
+    php83-sockets \
+    php83-tidy \
+    php83-tokenizer \
+    php83-xmlreader \
+    php83-zip \
+    php83-zlib \
+    php83-xsl \
+    php83-xml \
+    php83-xmlwriter \
+    php83-opcache \
+    php83-ctype \
+    php83-pdo_mysql \
+    php83-pdo_sqlite \
+    php83-sqlite3 \
+    php83-intl \
+    php83-fpm \
+    php83-mysqli \
+    php83-sodium && \
+
+    ln -snf /usr/bin/php83 /usr/bin/php && \
+    ln -snf /usr/sbin/php-fpm83 /usr/sbin/php-fpm && \
+
+    # Symlink current version
+    mkdir /etc/php && \
+    ln -snf /etc/php83 /etc/php/current;
+
+# Composer
+RUN EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)" && \
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    ACTUAL_SIGNATURE="$(php -r "echo hash_file('sha384', 'composer-setup.php');")" && \
+    if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]; \
+    then \
+        >&2 echo 'ERROR: Invalid installer signature' \
+        rm composer-setup.php \
+    exit 1; \
+    fi && \
+    php composer-setup.php --quiet --install-dir=/usr/local/bin --filename=composer && \
+    RESULT=$? && \
+    rm composer-setup.php && \
+    exit $RESULT
+
+RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
+    && architecture=$(case $(uname -m) in i386 | i686 | x86) echo "i386" ;; x86_64 | amd64) echo "amd64" ;; aarch64 | arm64 | armv8) echo "arm64" ;; *) echo "amd64" ;; esac) \
+    && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/alpine/$architecture/$version \
+    && mkdir -p /tmp/blackfire \
+    && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire \
+    && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so \
+    && rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
+
+RUN if [ "$ATATUS_ENABLED" == "TRUE" ]; then \
+    # Atatus
+    architecture=$(case $(uname -m) in i386 | i686 | x86) echo "i386" ;; x86_64 | amd64) echo "x64" ;; aarch64 | arm64 | armv8) echo "arm64" ;; *) echo "x64" ;; esac) && \
+    wget https://s3.amazonaws.com/atatus-artifacts/atatus-php/downloads/atatus-php-$ATATUS_VERSION-$architecture-musl.tar.gz && tar -xzvf atatus-php-$ATATUS_VERSION-$architecture-musl.tar.gz && cd atatus-php-$ATATUS_VERSION-$architecture-musl && ./install.sh && rm -f /atatus-php-$ATATUS_VERSION-$architecture-musl.tar.gz && rm -rf /atatus-php-$ATATUS_VERSION-$architecture-musl && \
+    sed -i -e 's#atatus.trace.response_time = 2000#atatus.trace.response_time = 1500#g' /etc/php/current/conf.d/atatus.ini && \
+    sed -i -e 's#atatus.collector.pidfile = "/var/run/atatus-php-collector.pid"#atatus.collector.pidfile = "/run/atatus-php-collector.pid"#g' /etc/php/current/conf.d/atatus.ini && \
+    sed -i -e 's#atatus.collector.connection = "/tmp/.atatus.sock"#atatus.collector.connection = "/run/atatus.sock"#g' /etc/php/current/conf.d/atatus.ini && \
+    # Write log files to stdout
+    rm -f /var/log/atatus/agent.log && rm -f /var/log/atatus/collector.log && rm -f /var/log/atatus/debug.txt && ln -sf /dev/null /var/log/atatus/agent.log && ln -sf /dev/null /var/log/atatus/collector.log && ln -sf /dev/null /var/log/atatus/debug.txt; \
+    fi
+
+# PHP Config
+ADD /php/conf/php-fpm.conf /etc/php/current/php-fpm.conf
+ADD /php/conf/php.ini /etc/php/current/php.ini
+ADD /php/conf/php-www.conf /etc/php/current/php-fpm.d/www.conf
+
+# Clear out garbage
+RUN unset DEPS && rm -rf /run/php && rm -rf /run/php-fpm8.3
+
+# Start script
+ADD /php/scripts/start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Start cron script
+ADD /php/scripts/start-cron.sh /start-cron.sh
+RUN chmod +x /start-cron.sh
+
+# Start worker script
+ADD /php/scripts/start-worker.sh /start-worker.sh
+RUN chmod +x /start-worker.sh
+
+# Configure script
+ADD /php/scripts/configure.sh /configure.sh
+RUN chmod +x /configure.sh
+
+# Healthcheck script
+ADD /php/scripts/healthcheck.sh /healthcheck.sh
+RUN chmod +x /healthcheck.sh
+
+CMD ["/start.sh"]

@@ -1,0 +1,31 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: 'php83-test.parallax.dev-https'
+  namespace: 'k8s-openresty-php'
+spec:
+  entryPoints:
+    - https
+  routes:
+  - match: Host(`php83-test.parallax.dev`)
+    kind: Rule
+    services:
+    - name: 'openresty-83-test'
+      port: 80
+  tls:
+    secretName: 'php83-test-ssl'
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: 'php83-test.parallax.dev-http'
+  namespace: 'k8s-openresty-php'
+spec:
+  entryPoints:
+    - http
+  routes:
+  - match: Host(`php83-test.parallax.dev`)
+    kind: Rule
+    services:
+    - name: 'openresty-83-test'
+      port: 80
