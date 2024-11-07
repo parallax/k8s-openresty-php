@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: 'php84-test-ssl'
+  namespace: 'k8s-openresty-php'
+spec:
+  dnsNames:
+  - 'php84-test.parallax.dev'
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod
+  secretName: 'php84-test-ssl'
