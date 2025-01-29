@@ -193,7 +193,7 @@ fi
 if [ ! -z "$MAX_EXECUTION_TIME" ]; then
     
     # Set PHP.ini accordingly
-    sed -i -e "s#max_execution_time = 600#max_execution_time = ${MAX_EXECUTION_TIME}#g" /etc/php/current/php.ini
+    sed -i -e "s#max_execution_time = 32#max_execution_time = ${MAX_EXECUTION_TIME}#g" /etc/php/current/php.ini
 
 fi
 
