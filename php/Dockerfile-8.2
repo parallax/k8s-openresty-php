@@ -1,28 +1,27 @@
 # Patched PHP packages, built from Alpine's own recipe because Alpine hasn't
-# published php82>=8.2.35 yet. Delete this stage (and the --mount/--repository
-# on apk add below) once php82>=8.2.35 is available from Alpine.
+# published php82>=8.2.35 yet. Delete this stage, php/aports/php82 (and the
+# --mount/--repository on apk add below) once php82>=8.2.35 is available from Alpine.
 FROM alpine:edge AS php-build
 
 ARG PHP_VERSION=8.2.35
 ARG PHP_SHA256=5737b98601fe5ab1b8c5db0c82ed3158acb9283ed3081ffe2faffb9ac81455e6
-ARG APORTS_REF=e8987ee554a4813b1d2b4ad689064fe4ab8b7aea
-ARG APORTS_PATH=testing/php82
 
 RUN apk add --no-cache alpine-sdk && \
-    abuild-keygen -a -n
+    abuild-keygen -a -n && \
+    cp /root/.config/abuild/*.rsa.pub /etc/apk/keys/
 
-WORKDIR /aports/$APORTS_PATH
-RUN wget -qO- "https://gitlab.alpinelinux.org/alpine/aports/-/archive/$APORTS_REF/aports.tar.gz?path=$APORTS_PATH" \
-        | tar -xz --strip-components=1 -C /aports && \
-    sed -i -e "s/^pkgver=.*/pkgver=$PHP_VERSION/" -e "s/^pkgrel=.*/pkgrel=0/" APKBUILD && \
+# Recipe copied from alpinelinux/aports testing/php82 at e8987ee554a4813b1d2b4ad689064fe4ab8b7aea
+COPY php/aports/php82 /aports/php82
+WORKDIR /aports/php82
+RUN sed -i -e "s/^pkgver=.*/pkgver=$PHP_VERSION/" -e "s/^pkgrel=.*/pkgrel=0/" APKBUILD && \
     echo 'options="!check"' >> APKBUILD && \
     mkdir -p /var/cache/distfiles && \
     wget -qO /var/cache/distfiles/php-$PHP_VERSION.tar.xz https://www.php.net/distributions/php-$PHP_VERSION.tar.xz && \
     echo "$PHP_SHA256  /var/cache/distfiles/php-$PHP_VERSION.tar.xz" | sha256sum -c - && \
     abuild -F checksum && \
     abuild -F -r && \
-    mv /root/packages/${APORTS_PATH%/*} /php-packages && \
-    cp /root/.abuild/*.rsa.pub /php-packages/
+    mv /root/packages/aports /php-packages && \
+    cp /root/.config/abuild/*.rsa.pub /php-packages/
 
 FROM alpine:3.17
 
