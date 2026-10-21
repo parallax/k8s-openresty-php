@@ -75,7 +75,7 @@ RUN apk add --no-cache \
     fcgi \
     nano \
     tidyhtml \
-    php83 \
+    "php83>=8.3.36" \
     php83-pecl-apcu \
     php83-bz2 \
     php83-common \
@@ -93,7 +93,7 @@ RUN apk add --no-cache \
     php83-pdo \
     php83-posix \
     php83-soap \
-    php83-session \
+    "php83-session>=8.3.36" \
     php83-pecl-redis \
     php83-zip \
     php83-ldap \
@@ -122,7 +122,7 @@ RUN apk add --no-cache \
     php83-pdo_sqlite \
     php83-sqlite3 \
     php83-intl \
-    php83-fpm \
+    "php83-fpm>=8.3.36" \
     php83-mysqli \
     php83-sodium && \
 

@@ -76,7 +76,7 @@ RUN apk add --no-cache \
     fcgi \
     nano \
     tidyhtml \
-    php84 \
+    "php84>=8.4.27" \
     php84-pecl-apcu \
     php84-bz2 \
     php84-common \
@@ -94,7 +94,7 @@ RUN apk add --no-cache \
     php84-pdo \
     php84-posix \
     php84-soap \
-    php84-session \
+    "php84-session>=8.4.27" \
     php84-pecl-redis \
     php84-zip \
     php84-ldap \
@@ -123,7 +123,7 @@ RUN apk add --no-cache \
     php84-pdo_sqlite \
     php84-sqlite3 \
     php84-intl \
-    php84-fpm \
+    "php84-fpm>=8.4.27" \
     php84-mysqli \
     php84-sodium && \
 

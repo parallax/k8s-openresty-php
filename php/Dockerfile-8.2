@@ -73,7 +73,7 @@ RUN apk add --no-cache \
     fcgi \
     nano \
     tidyhtml \
-    php82 \
+    "php82>=8.2.35" \
     php82-pecl-apcu \
     php82-bz2 \
     php82-common \
@@ -91,7 +91,7 @@ RUN apk add --no-cache \
     php82-pdo \
     php82-posix \
     php82-soap \
-    php82-session \
+    "php82-session>=8.2.35" \
     php82-pecl-redis \
     php82-zip \
     php82-ldap \
@@ -120,7 +120,7 @@ RUN apk add --no-cache \
     php82-pdo_sqlite \
     php82-sqlite3 \
     php82-intl \
-    php82-fpm \
+    "php82-fpm>=8.2.35" \
     php82-mysqli \
     php82-sodium && \
 
