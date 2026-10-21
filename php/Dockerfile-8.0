@@ -161,6 +161,7 @@ RUN if [ "$ATATUS_ENABLED" == "TRUE" ]; then \
 # PHP Config
 ADD /php/conf/php-fpm.conf /etc/php/current/php-fpm.conf
 ADD /php/conf/php.ini /etc/php/current/php.ini
+ADD /php/conf/zz-security.ini /etc/php/current/conf.d/zz-security.ini
 ADD /php/conf/php-www.conf /etc/php/current/php-fpm.d/www.conf
 
 # Clear out garbage
