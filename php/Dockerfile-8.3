@@ -1,3 +1,29 @@
+# Patched PHP packages, built from Alpine's own recipe because Alpine hasn't
+# published php83>=8.3.36 yet. Delete this stage (and the --mount/--repository
+# on apk add below) once php83>=8.3.36 is available from Alpine.
+FROM alpine:edge AS php-build
+
+ARG PHP_VERSION=8.3.36
+ARG PHP_SHA256=dd54693aa334c5c4d72e9aee96b082c2473750a18a6c1d105789c93a3b1692fd
+ARG APORTS_REF=047e80ddf829a8338ef250e4672b3ac193b40e20
+ARG APORTS_PATH=community/php83
+
+RUN apk add --no-cache alpine-sdk && \
+    abuild-keygen -a -n
+
+WORKDIR /aports/$APORTS_PATH
+RUN wget -qO- "https://gitlab.alpinelinux.org/alpine/aports/-/archive/$APORTS_REF/aports.tar.gz?path=$APORTS_PATH" \
+        | tar -xz --strip-components=1 -C /aports && \
+    sed -i -e "s/^pkgver=.*/pkgver=$PHP_VERSION/" -e "s/^pkgrel=.*/pkgrel=0/" APKBUILD && \
+    echo 'options="!check"' >> APKBUILD && \
+    mkdir -p /var/cache/distfiles && \
+    wget -qO /var/cache/distfiles/php-$PHP_VERSION.tar.xz https://www.php.net/distributions/php-$PHP_VERSION.tar.xz && \
+    echo "$PHP_SHA256  /var/cache/distfiles/php-$PHP_VERSION.tar.xz" | sha256sum -c - && \
+    abuild -F checksum && \
+    abuild -F -r && \
+    mv /root/packages/${APORTS_PATH%/*} /php-packages && \
+    cp /root/.abuild/*.rsa.pub /php-packages/
+
 FROM alpine:3.19
 
 ARG ATATUS_VERSION=1.15.1
@@ -62,7 +88,9 @@ RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repos
 RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/main' >> /etc/apk/repositories
 
 # Install deps
-RUN apk add --no-cache \
+RUN --mount=type=bind,from=php-build,source=/php-packages,target=/tmp/php-packages \
+    cp /tmp/php-packages/*.rsa.pub /etc/apk/keys/ && \
+    apk add --no-cache --repository /tmp/php-packages \
     curl \
     ca-certificates \
     supervisor \
