@@ -1,3 +1,7 @@
+# phpredis source including its liblzf submodule, which GitHub's tag tarballs leave out
+FROM scratch AS phpredis-src
+ADD https://github.com/phpredis/phpredis.git#6.3.0 /
+
 # Official PHP image, pinned to the patch release so the build fails rather than
 # silently falling back to an older, vulnerable PHP.
 FROM php:8.3.36-fpm-alpine3.24
@@ -12,7 +16,8 @@ COPY --from=mlocati/php-extension-installer:2.12.2 /usr/bin/install-php-extensio
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # Install deps
-RUN apk add --no-cache \
+RUN --mount=type=bind,from=phpredis-src,target=/tmp/phpredis,rw \
+    apk add --no-cache \
     curl \
     ca-certificates \
     supervisor \
@@ -23,8 +28,9 @@ RUN apk add --no-cache \
     fcgi \
     nano && \
 
+    # PECL extensions come from GitHub, as pecl.php.net is unreliable
     install-php-extensions \
-    apcu \
+    krakjoe/apcu@v5.1.28 \
     bcmath \
     bz2 \
     calendar \
@@ -32,8 +38,8 @@ RUN apk add --no-cache \
     ftp \
     gd \
     gettext \
-    igbinary \
-    imagick \
+    igbinary/igbinary@3.2.16 \
+    Imagick/imagick@3.8.1 \
     intl \
     ldap \
     mysqli \
@@ -42,7 +48,7 @@ RUN apk add --no-cache \
     pdo_mysql \
     pdo_pgsql \
     pgsql \
-    redis \
+    /tmp/phpredis \
     shmop \
     soap \
     sockets \
