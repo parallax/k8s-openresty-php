@@ -1,3 +1,28 @@
+# Patched PHP packages, built from Alpine's own recipe because Alpine hasn't
+# published php82>=8.2.35 yet. Delete this stage, php/aports/php82 (and the
+# --mount/--repository on apk add below) once php82>=8.2.35 is available from Alpine.
+FROM alpine:edge AS php-build
+
+ARG PHP_VERSION=8.2.35
+ARG PHP_SHA256=5737b98601fe5ab1b8c5db0c82ed3158acb9283ed3081ffe2faffb9ac81455e6
+
+RUN apk add --no-cache alpine-sdk && \
+    abuild-keygen -a -n && \
+    cp /root/.config/abuild/*.rsa.pub /etc/apk/keys/
+
+# Recipe copied from alpinelinux/aports testing/php82 at e8987ee554a4813b1d2b4ad689064fe4ab8b7aea
+COPY php/aports/php82 /aports/php82
+WORKDIR /aports/php82
+RUN sed -i -e "s/^pkgver=.*/pkgver=$PHP_VERSION/" -e "s/^pkgrel=.*/pkgrel=0/" APKBUILD && \
+    echo 'options="!check"' >> APKBUILD && \
+    mkdir -p /var/cache/distfiles && \
+    wget -qO /var/cache/distfiles/php-$PHP_VERSION.tar.xz https://www.php.net/distributions/php-$PHP_VERSION.tar.xz && \
+    echo "$PHP_SHA256  /var/cache/distfiles/php-$PHP_VERSION.tar.xz" | sha256sum -c - && \
+    abuild -F checksum && \
+    REPODEST=/repo abuild -F -r && \
+    mv /repo/aports /php-packages && \
+    cp /root/.config/abuild/*.rsa.pub /php-packages/
+
 FROM alpine:3.17
 
 ARG ATATUS_VERSION=1.15.1
@@ -60,7 +85,9 @@ RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repos
 RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/main' >> /etc/apk/repositories
 
 # Install deps
-RUN apk add --no-cache \
+RUN --mount=type=bind,from=php-build,source=/php-packages,target=/tmp/php-packages \
+    cp /tmp/php-packages/*.rsa.pub /etc/apk/keys/ && \
+    apk add --no-cache --repository /tmp/php-packages \
     curl \
     ca-certificates \
     supervisor \
@@ -73,7 +100,7 @@ RUN apk add --no-cache \
     fcgi \
     nano \
     tidyhtml \
-    php82 \
+    "php82>=8.2.35" \
     php82-pecl-apcu \
     php82-bz2 \
     php82-common \
@@ -91,7 +118,7 @@ RUN apk add --no-cache \
     php82-pdo \
     php82-posix \
     php82-soap \
-    php82-session \
+    "php82-session>=8.2.35" \
     php82-pecl-redis \
     php82-zip \
     php82-ldap \
@@ -120,7 +147,7 @@ RUN apk add --no-cache \
     php82-pdo_sqlite \
     php82-sqlite3 \
     php82-intl \
-    php82-fpm \
+    "php82-fpm>=8.2.35" \
     php82-mysqli \
     php82-sodium && \
 
