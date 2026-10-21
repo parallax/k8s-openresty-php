@@ -19,8 +19,8 @@ RUN sed -i -e "s/^pkgver=.*/pkgver=$PHP_VERSION/" -e "s/^pkgrel=.*/pkgrel=0/" AP
     wget -qO /var/cache/distfiles/php-$PHP_VERSION.tar.xz https://www.php.net/distributions/php-$PHP_VERSION.tar.xz && \
     echo "$PHP_SHA256  /var/cache/distfiles/php-$PHP_VERSION.tar.xz" | sha256sum -c - && \
     abuild -F checksum && \
-    abuild -F -r && \
-    mv /root/packages/aports /php-packages && \
+    REPODEST=/repo abuild -F -r && \
+    mv /repo/aports /php-packages && \
     cp /root/.config/abuild/*.rsa.pub /php-packages/
 
 FROM alpine:3.19
