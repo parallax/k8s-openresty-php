@@ -1,65 +1,15 @@
-FROM alpine:3.19
+# Official PHP image, pinned to the patch release so the build fails rather than
+# silently falling back to an older, vulnerable PHP.
+FROM php:8.3.36-fpm-alpine3.24
 
 ARG ATATUS_VERSION=1.15.1
 ARG ATATUS_ENABLED=TRUE
 
-ENV \
-    # When using Composer, disable the warning about running commands as root/super user
-    COMPOSER_ALLOW_SUPERUSER=1 \
-    # Persistent runtime dependencies
-    DEPS="php83 \
-        php83-common \
-        php83-curl \
-        php83-dom \
-        php83-exif \
-        php83-fileinfo \
-        php83-ftp \
-        php83-gd \
-        php83-iconv \
-        php83-mysqli \
-        php83-openssl \
-        php83-pdo \
-        php83-posix \
-        php83-soap \
-        php83-zip \
-        php83-ldap \
-        php83-bcmath \
-        php83-calendar \
-        php83-gettext \
-        php83-mbstring \
-        php83-pcntl \
-        php83-phar \
-        php83-simplexml \
-        php83-sockets \
-        php83-tokenizer \
-        php83-xmlreader \
-        php83-zip \
-        php83-zlib \
-        php83-xsl \
-        php83-opcache \
-        php83-ctype \
-        php83-pdo_mysql \
-        php83-pgsql \
-        php83-pdo_pgsql \
-        php83-pdo_sqlite \
-        php83-sqlite3 \
-        php83-intl \
-        php83-fpm \
-        php83-mysqli \
-        php83-sodium \
-        curl \
-        ca-certificates \
-        supervisor \
-        bash \
-        tzdata \
-        openssl \
-        wget \
-        curl \
-        bash"
+# Installs PHP extensions along with their build and runtime dependencies
+COPY --from=mlocati/php-extension-installer:2.12.2 /usr/bin/install-php-extensions /usr/local/bin/
 
-RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories
-RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/community' >> /etc/apk/repositories
-RUN echo 'http://dl-cdn.alpinelinux.org/alpine/edge/main' >> /etc/apk/repositories
+# When using Composer, disable the warning about running commands as root/super user
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # Install deps
 RUN apk add --no-cache \
@@ -70,68 +20,45 @@ RUN apk add --no-cache \
     tzdata \
     openssl \
     wget \
-    curl \
-    bash \
     fcgi \
-    nano \
-    tidyhtml \
-    php83 \
-    php83-pecl-apcu \
-    php83-bz2 \
-    php83-common \
-    php83-curl \
-    php83-dom \
-    php83-exif \
-    php83-fileinfo \
-    php83-ftp \
-    php83-gd \
-    php83-iconv \
-    php83-pecl-imagick \
-    php83-mbstring \
-    php83-mysqli \
-    php83-openssl \
-    php83-pdo \
-    php83-posix \
-    php83-soap \
-    php83-session \
-    php83-pecl-redis \
-    php83-zip \
-    php83-ldap \
-    php83-bcmath \
-    php83-calendar \
-    php83-gettext \
-    php83-pcntl \
-    php83-phar \
-    php83-simplexml \
-    php83-shmop \
-    php83-sysvmsg \
-    php83-sysvsem \
-    php83-sysvshm \
-    php83-sockets \
-    php83-tidy \
-    php83-tokenizer \
-    php83-xmlreader \
-    php83-zip \
-    php83-zlib \
-    php83-xsl \
-    php83-xml \
-    php83-xmlwriter \
-    php83-opcache \
-    php83-ctype \
-    php83-pdo_mysql \
-    php83-pdo_sqlite \
-    php83-sqlite3 \
-    php83-intl \
-    php83-fpm \
-    php83-mysqli \
-    php83-sodium && \
+    nano && \
 
-    ln -snf /usr/bin/php83 /usr/bin/php && \
-    ln -snf /usr/sbin/php-fpm83 /usr/sbin/php-fpm && \
+    install-php-extensions \
+    apcu \
+    bcmath \
+    bz2 \
+    calendar \
+    exif \
+    ftp \
+    gd \
+    gettext \
+    igbinary \
+    imagick \
+    intl \
+    ldap \
+    mysqli \
+    opcache \
+    pcntl \
+    pdo_mysql \
+    pdo_pgsql \
+    pgsql \
+    redis \
+    shmop \
+    soap \
+    sockets \
+    sysvmsg \
+    sysvsem \
+    sysvshm \
+    tidy \
+    xsl \
+    zip && \
 
-    # Symlink current version
+    # Keep the paths the scripts and downstream images expect
+    ln -snf /usr/local/bin/php /usr/bin/php && \
+    ln -snf /usr/local/sbin/php-fpm /usr/sbin/php-fpm && \
     mkdir /etc/php && \
-    ln -snf /etc/php83 /etc/php/current;
+    ln -snf "$PHP_INI_DIR" /etc/php/current && \
+    mkdir -p /etc/php/current/php-fpm.d;
 
 # Composer
 RUN EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)" && \
@@ -172,8 +99,6 @@ ADD /php/conf/php-fpm.conf /etc/php/current/php-fpm.conf
 ADD /php/conf/php.ini /etc/php/current/php.ini
 ADD /php/conf/php-www.conf /etc/php/current/php-fpm.d/www.conf
 
-# Clear out garbage
-RUN unset DEPS && rm -rf /run/php && rm -rf /run/php-fpm8.3
 
 # Start script
 ADD /php/scripts/start.sh /start.sh
