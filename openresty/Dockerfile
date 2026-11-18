@@ -1,4 +1,4 @@
-FROM openresty/openresty:1.25.3.2-alpine
+FROM openresty/openresty:1.31.9.1-alpine
 
 RUN apk add --no-cache bash nano
 
