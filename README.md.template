@@ -3,9 +3,10 @@
 > A set of relatively clean but full-featured, split solution to running openresty and php-fpm together but in seperate containers, supporting PHP versions 5.6, 7.1, 7.2, 7.3, 7.4, 8.0, 8.1 and 8.2 maintained by [Parallax](https://parall.ax/)
 
 ## Docker Tags 
-|openresty      | Docker tag                                      |
-| ------------- | -------------                                   |
-| 1.15.8.2      | prlx/k8s-openresty-php-openresty:release-latest |
+|openresty      | Docker tag                                        |
+| ------------- | -------------                                     |
+| 1.31.9.1      | prlx/k8s-openresty-php-openresty:release-1.31.9.1 |
+| 1.31.9.1      | prlx/k8s-openresty-php-openresty:release-latest   |
 
 | PHP           | Docker Tag                                          |
 | ------------- | -------------                                       |
